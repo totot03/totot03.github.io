@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="ko">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>박민재 포트폴리오</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="신입 개발자 박민재 - HelpNest 티켓·SLA·실시간 채팅, 약값알림">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap">
+<style>
+  /* 레이아웃: 한 줄 세로 스크롤. 어두운 히어로 띠 → 밝은 본문 섹션, 내용 폭 1120px 왼쪽 정렬 */
+  :root {
+    --bg: #f3f6f5; --paper: #ffffff; --ink: #0f1a18; --ink-2: #3a4845; --muted: #687773; --line: #dce5e2;
+    --accent: #0f766e; --accent-soft: #e0f1ee; --warn: #b45309; --warn-soft: #fbeedd; --ok: #15803d;
+    /* 히어로 띠와 코드 블록은 두 테마 모두 어둡게 */
+    --band: #0b1513; --band-2: #13211e; --band-ink: #e6efec; --band-muted: #8fa29d; --band-line: rgba(255,255,255,.1); --band-accent: #5eead4;
+    --code-bg: #0e1715; --code-ink: #cfe9e3;
+    --f-body: "IBM Plex Sans KR", "Malgun Gothic", system-ui, sans-serif;
+    --f-mono: "JetBrains Mono", ui-monospace, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+    --bg: #0c1211; --paper: #131c1a; --ink: #e8efed; --ink-2: #b8c6c2; --muted: #84948f; --line: #23312e;
+    --accent: #2dd4bf; --accent-soft: rgba(45,212,191,.12); --warn: #f59e0b; --warn-soft: rgba(245,158,11,.14); --ok: #4ade80;
+    color-scheme: dark;
+  } }
+  :root[data-theme="dark"] {
+    --bg: #0c1211; --paper: #131c1a; --ink: #e8efed; --ink-2: #b8c6c2; --muted: #84948f; --line: #23312e;
+    --accent: #2dd4bf; --accent-soft: rgba(45,212,191,.12); --warn: #f59e0b; --warn-soft: rgba(245,158,11,.14); --ok: #4ade80;
+    color-scheme: dark;
+  }
+
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 400 16.5px/1.7 var(--f-body); word-break: keep-all; -webkit-font-smoothing: antialiased; }
+  a { color: inherit; }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+  h1, h2, h3 { text-wrap: balance; margin: 0; letter-spacing: -.03em; }
+  p { margin: 0; }
+  code, .mono { font-family: var(--f-mono); }
+  .wrap { max-width: 1120px; margin: 0 auto; padding-left: max(20px, env(safe-area-inset-left, 0px)); padding-right: max(20px, env(safe-area-inset-right, 0px)); }
+
+  /* 상단 내비 */
+  body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--band); }
+  .nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: color-mix(in srgb, var(--band) 88%, transparent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--band-line); }
+  .nav .wrap { display: flex; align-items: center; gap: 4px; height: 56px; }
+  .nav .me { font-weight: 700; color: var(--band-ink); text-decoration: none; margin-right: auto; display: flex; align-items: center; gap: 10px; }
+  .nav .me i { width: 10px; height: 10px; border-radius: 3px; background: var(--band-accent); }
+  .nav a.lnk { color: var(--band-muted); text-decoration: none; font-size: 14.5px; font-weight: 500; padding: 6px 12px; border-radius: 8px; }
+  .nav a.lnk:hover { color: var(--band-ink); background: var(--band-line); }
+  @media (max-width: 720px) { .nav a.lnk { display: none; } .nav a.lnk.keep { display: inline; } }
+
+  /* 히어로 */
+  .hero { background: var(--band); color: var(--band-ink); padding-block: clamp(56px, 9vw, 112px) clamp(48px, 7vw, 88px); position: relative; overflow: hidden; }
+  .hero::before { content: ""; position: absolute; right: -240px; top: -260px; width: 720px; height: 720px; border-radius: 50%; background: radial-gradient(circle, rgba(45,212,191,.22), transparent 64%); pointer-events: none; }
+  .hero .wrap { position: relative; display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: clamp(32px, 5vw, 72px); align-items: center; }
+  .kicker { font: 700 12.5px/1 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--band-accent); }
+  .hero h1 { font-size: clamp(40px, 6.2vw, 76px); font-weight: 700; line-height: 1.08; margin-top: 18px; letter-spacing: -.045em; }
+  .hero h1 span { color: var(--band-accent); }
+  .hero .lead { font-size: clamp(16.5px, 1.6vw, 19px); color: var(--band-muted); margin-top: 22px; max-width: 34em; }
+  .hero .lead b { color: var(--band-ink); font-weight: 600; }
+  .contact { display: grid; grid-template-columns: auto 1fr; gap: 6px 18px; margin-top: 30px; font-size: 15px; }
+  .contact dt { font: 700 11.5px/2.1 var(--f-mono); letter-spacing: .12em; color: var(--band-muted); text-transform: uppercase; }
+  .contact dd { margin: 0; color: var(--band-ink); user-select: all; }
+  .cta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 30px; }
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 11px 20px; border-radius: 10px; font-weight: 600; font-size: 15px; text-decoration: none; }
+  .btn.solid { background: var(--band-accent); color: #062421; }
+  .btn.line { border: 1px solid var(--band-line); color: var(--band-ink); }
+  .btn:hover { filter: brightness(1.08); }
+
+  /* 히어로 오른쪽: 프로젝트 바로가기 */
+  .plinks { display: grid; gap: 14px; }
+  .plinks > .lbl { font: 700 11.5px/1 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--band-muted); }
+  .plink { background: var(--band-2); border: 1px solid var(--band-line); border-radius: 18px; padding: 22px 24px; display: grid; gap: 10px; box-shadow: 0 30px 70px rgba(0,0,0,.3); transition: border-color .2s; }
+  .plink:hover { border-color: color-mix(in srgb, var(--band-accent) 55%, transparent); }
+  .plink .top { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+  .plink h3 { font-size: 21px; font-weight: 700; margin-right: auto; }
+  .tag { font-size: 12.5px; font-weight: 600; padding: 3px 10px; border-radius: 999px; background: var(--band-line); color: var(--band-ink); }
+  .tag.live { background: rgba(94,234,212,.16); color: var(--band-accent); }
+  .plink p { font-size: 14.5px; color: var(--band-muted); }
+  .plink .go { display: flex; flex-wrap: wrap; gap: 8px; padding-top: 12px; border-top: 1px dashed var(--band-line); }
+  .plink .go a { font-size: 14px; font-weight: 600; text-decoration: none; padding: 7px 14px; border-radius: 9px; border: 1px solid var(--band-line); color: var(--band-ink); }
+  .plink .go a.main { background: var(--band-accent); border-color: transparent; color: #062421; }
+  .plink .go a:hover { filter: brightness(1.1); border-color: var(--band-muted); }
+  .plink .go a.more { color: var(--band-muted); border-color: transparent; padding-inline: 4px; margin-left: auto; }
+  @media (max-width: 880px) { .hero .wrap { grid-template-columns: 1fr; } }
+
+  /* 숫자 띠 */
+  .facts { border-bottom: 1px solid var(--line); background: var(--paper); }
+  .facts .wrap { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .fact { padding: 26px 0 24px; padding-right: 16px; }
+  .fact + .fact { border-left: 1px solid var(--line); padding-left: 24px; }
+  .fact .n { font-size: clamp(30px, 3.6vw, 42px); font-weight: 700; letter-spacing: -.04em; line-height: 1; font-variant-numeric: tabular-nums; }
+  .fact .n small { font-size: .42em; font-weight: 600; color: var(--muted); margin-left: 3px; letter-spacing: 0; }
+  .fact .l { font-size: 14px; color: var(--muted); margin-top: 8px; }
+  @media (max-width: 720px) { .facts .wrap { grid-template-columns: 1fr 1fr; } .fact:nth-child(3) { border-left: 0; padding-left: 0; } .fact:nth-child(n+3) { border-top: 1px solid var(--line); } }
+
+  /* 섹션 공통 */
+  section { padding-block: clamp(64px, 8vw, 104px); }
+  section + section { border-top: 1px solid var(--line); }
+  .eyebrow { font: 700 12.5px/1 var(--f-mono); letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+  h2 { font-size: clamp(28px, 3.6vw, 44px); font-weight: 700; line-height: 1.2; margin-top: 14px; }
+  .intro { color: var(--ink-2); font-size: 17px; margin-top: 16px; max-width: 42em; }
+  .meta-row { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: 20px; font-size: 14.5px; color: var(--muted); }
+  .meta-row b { color: var(--ink); font-weight: 600; }
+  .meta-row a { color: var(--accent); font-weight: 600; text-decoration: none; }
+  .meta-row a:hover { text-decoration: underline; }
+  h3.sub { font-size: 21px; font-weight: 700; margin-top: clamp(40px, 5vw, 56px); display: flex; align-items: baseline; gap: 12px; }
+  h3.sub .mono { font-size: 12px; font-weight: 700; letter-spacing: .1em; color: var(--muted); }
+
+  /* 담당 범위 */
+  .own { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 16px; margin-top: 18px; }
+  .box { background: var(--paper); border: 1px solid var(--line); border-radius: 16px; padding: 24px 26px; min-width: 0; }
+  .box h4 { margin: 0 0 12px; font-size: 15px; font-weight: 700; }
+  ul.dots { list-style: none; margin: 0; padding: 0; display: grid; gap: 9px; }
+  ul.dots li { position: relative; padding-left: 18px; color: var(--ink-2); }
+  ul.dots li::before { content: ""; position: absolute; left: 0; top: .72em; width: 6px; height: 6px; border-radius: 2px; background: var(--accent); }
+  .tables { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tables code { font-size: 13px; padding: 4px 10px; border-radius: 7px; background: var(--accent-soft); color: var(--accent); }
+  .box .note { font-size: 14.5px; color: var(--muted); margin-top: 14px; padding-top: 14px; border-top: 1px dashed var(--line); }
+
+  /* 티켓 상태 전이 */
+  .flow { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; margin-top: 18px; }
+  .state { background: var(--paper); border: 1px solid var(--line); border-radius: 14px; padding: 16px 16px 14px; position: relative; }
+  .state:not(:last-child)::after { content: "→"; position: absolute; right: -14px; top: 50%; transform: translateY(-50%); z-index: 1; color: var(--muted); font-size: 14px; }
+  .state .en { font: 700 10.5px/1 var(--f-mono); letter-spacing: .08em; color: var(--muted); }
+  .state .ko { font-size: 20px; font-weight: 700; margin-top: 6px; }
+  .state .by { font-size: 13px; color: var(--muted); margin-top: 2px; }
+  .state.last { background: var(--accent-soft); border-color: transparent; }
+  .rules { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; margin-top: 16px; }
+  table.sla { width: 100%; border-collapse: collapse; font-size: 15px; font-variant-numeric: tabular-nums; }
+  table.sla th { text-align: left; font: 700 11.5px/1 var(--f-mono); letter-spacing: .08em; color: var(--muted); padding-bottom: 10px; }
+  table.sla td { padding: 9px 0; border-top: 1px solid var(--line); color: var(--ink-2); }
+  table.sla td:first-child { font-weight: 600; color: var(--ink); }
+  .pill { display: inline-block; font-size: 13px; font-weight: 600; padding: 2px 10px; border-radius: 999px; background: var(--warn-soft); color: var(--warn); }
+  @media (max-width: 880px) {
+    .own, .rules { grid-template-columns: 1fr; }
+    .flow { grid-template-columns: 1fr; }
+    .state:not(:last-child)::after { content: "↓"; right: 16px; top: auto; bottom: -14px; transform: none; }
+  }
+
+  /* 문제 해결 카드 */
+  .probs { display: grid; gap: 16px; margin-top: 18px; }
+  .prob { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); background: var(--paper); border: 1px solid var(--line); border-radius: 18px; overflow: hidden; }
+  .prob .txt { padding: 26px 28px; }
+  .prob .q { font-size: 19px; font-weight: 700; line-height: 1.4; }
+  .prob .lbl { font: 700 11.5px/1 var(--f-mono); letter-spacing: .1em; color: var(--accent); margin-top: 18px; }
+  .prob .a { color: var(--ink-2); margin-top: 8px; }
+  figure.code { margin: 0; background: var(--code-bg); display: flex; flex-direction: column; min-width: 0; }
+  figure.code figcaption { font: 500 12px/1 var(--f-mono); color: #7d948f; padding: 14px 20px; border-bottom: 1px solid rgba(255,255,255,.07); }
+  figure.code pre { margin: 0; padding: 18px 20px; font: 500 13.5px/1.7 var(--f-mono); color: var(--code-ink); overflow-x: auto; flex: 1; display: flex; align-items: center; }
+  .c-k { color: #5eead4; } .c-s { color: #fcd34d; } .c-c { color: #6b817c; }
+  @media (max-width: 880px) { .prob { grid-template-columns: 1fr; } }
+
+  /* 일하는 방식 */
+  .ways { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; margin-top: 28px; }
+  .way h4 { margin: 0; font-size: 18px; font-weight: 700; }
+  .way p { color: var(--ink-2); margin-top: 10px; font-size: 15.5px; }
+  .way .src { font-size: 13px; color: var(--muted); margin-top: 14px; padding-top: 12px; border-top: 1px dashed var(--line); }
+  @media (max-width: 880px) { .ways { grid-template-columns: 1fr; } }
+
+  /* 기술 · 학력 */
+  .skills { display: grid; gap: 0; margin-top: 24px; border-top: 1px solid var(--line); }
+  .skill { display: grid; grid-template-columns: 150px minmax(0, 1fr); gap: 20px; padding: 16px 0; border-bottom: 1px solid var(--line); }
+  .skill dt { font-weight: 700; }
+  .skill dd { margin: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+  .chip { font-size: 14px; padding: 3px 11px; border-radius: 8px; background: var(--paper); border: 1px solid var(--line); color: var(--ink-2); }
+  .skills-note { font-size: 14px; color: var(--muted); margin-top: 14px; }
+  .edu { display: grid; gap: 0; margin-top: 24px; }
+  .edu-item { display: grid; grid-template-columns: 190px minmax(0, 1fr); gap: 20px; padding: 18px 0; border-top: 1px solid var(--line); }
+  .edu-item .when { font: 500 14px/1.7 var(--f-mono); color: var(--muted); font-variant-numeric: tabular-nums; }
+  .edu-item h4 { margin: 0; font-size: 17.5px; font-weight: 700; }
+  .edu-item p { color: var(--ink-2); font-size: 15px; margin-top: 4px; }
+  .badge { display: inline-block; font-size: 12.5px; font-weight: 600; padding: 1px 9px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); margin-left: 6px; vertical-align: 2px; }
+  @media (max-width: 720px) { .skill, .edu-item { grid-template-columns: 1fr; gap: 6px; } }
+
+  /* 끝 */
+  footer { background: var(--band); color: var(--band-ink); padding-block: clamp(56px, 7vw, 88px) 40px; }
+  footer h2 { font-size: clamp(28px, 4vw, 48px); }
+  footer .contact { margin-top: 26px; }
+  footer .fine { margin-top: 48px; font-size: 13px; color: var(--band-muted); }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .btn, .nav a.lnk { transition: background .2s, color .2s, filter .2s; }
+  }
+</style>
+
+<nav class="nav" aria-label="섹션">
+  <div class="wrap">
+    <a class="me" href="#top"><i></i>박민재</a>
+    <a class="lnk" href="#helpnest">HelpNest</a>
+    <a class="lnk" href="#pharmaprice">약값알림</a>
+    <a class="lnk" href="#how">일하는 방식</a>
+    <a class="lnk" href="#skills">기술 · 학력</a>
+    <a class="lnk keep" href="#contact">연락처</a>
+  </div>
+</nav>
+
+<header class="hero" id="top">
+  <div class="wrap">
+    <div>
+      <p class="kicker">Junior Developer · Portfolio</p>
+      <h1>안녕하세요,<br>신입 개발자<br><span>박민재</span>입니다</h1>
+      <dl class="contact">
+        <dt>Email</dt><dd>mjppnara@naver.com</dd>
+        <dt>GitHub</dt><dd>github.com/totot03</dd>
+      </dl>
+      <div class="cta">
+        <a class="btn line" href="https://github.com/totot03" target="_blank" rel="noopener">GitHub 프로필 ↗</a>
+      </div>
+    </div>
+
+    <div class="plinks">
+      <p class="lbl">Projects</p>
+      <div class="plink">
+        <div class="top"><h3>HelpNest</h3><span class="tag live">운영 중</span><span class="tag">3인 팀</span></div>
+        <p>AI 고객상담 헬프데스크 · 티켓, SLA, 실시간 알림 · 채팅 담당</p>
+        <div class="go">
+          <a class="main" href="https://helpnest.kro.kr" target="_blank" rel="noopener">사이트 열기 ↗</a>
+          <a href="https://github.com/BaekSeongJun/helpnest-back" target="_blank" rel="noopener">Backend ↗</a>
+          <a href="https://github.com/BaekSeongJun/helpnest-front" target="_blank" rel="noopener">Frontend ↗</a>
+          <a href="https://github.com/BaekSeongJun/helpnest-docs" target="_blank" rel="noopener">Docs ↗</a>
+          <a class="more" href="#helpnest">자세히 ↓</a>
+        </div>
+      </div>
+      <div class="plink">
+        <div class="top"><h3>약값알림</h3><span class="tag">개인 구현</span></div>
+        <p>약국별 일반의약품 최저가 추천 · 위치 기반 서비스</p>
+        <div class="go">
+          <a class="main" href="https://github.com/totot03/miniproject1" target="_blank" rel="noopener">GitHub 저장소 ↗</a>
+          <a class="more" href="#pharmaprice">자세히 ↓</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="facts">
+  <div class="wrap">
+    <div class="fact"><div class="n">173<small>커밋</small></div><p class="l">HelpNest 백엔드, 팀 내 최다</p></div>
+    <div class="fact"><div class="n">35<small>클래스</small></div><p class="l">담당 도메인 테스트</p></div>
+    <div class="fact"><div class="n">7<small>테이블</small></div><p class="l">티켓 · 알림 · 채팅 소유</p></div>
+    <div class="fact"><div class="n">918<small>시간</small></div><p class="l">Java · Spring · AI 교육과정</p></div>
+  </div>
+</div>
+
+<main>
+<section id="helpnest">
+  <div class="wrap">
+    <p class="eyebrow">Main Project · Team of 3</p>
+    <h2>HelpNest: AI 고객상담 헬프데스크</h2>
+    <p class="intro">모든 문의를 티켓으로 모으고, AI가 분류와 답변 초안을 만들어 상담원의 처리 시간을 줄이는 고객센터 시스템입니다. 팀원 세 명이 도메인을 나눠 맡았고, 저는 문의가 티켓이 되어 해결될 때까지 흘러가는 길을 만들었습니다.</p>
+    <div class="meta-row">
+      <span><b>기간</b> 2026.09 – 10</span>
+      <span><b>역할</b> 티켓 흐름 · 실시간</span>
+      <span><b>스택</b> Spring Boot 4 · Java 21 · Next.js 16 · PostgreSQL 16 · AWS</span>
+      <a href="https://helpnest.kro.kr" target="_blank" rel="noopener">helpnest.kro.kr ↗</a>
+    </div>
+
+    <h3 class="sub">맡은 범위 <span class="mono">BACKEND + FRONTEND</span></h3>
+    <div class="own">
+      <div class="box">
+        <h4>기능</h4>
+        <ul class="dots">
+          <li>티켓 CRUD와 상태 전이 규칙, 모든 변경을 이력으로 기록</li>
+          <li>최소 부하 기반 자동 배정, 팀장의 수동 배정 · 재배정</li>
+          <li>SLA 스케줄러: 첫 응답 기한 80% 경과 · 초과 시 실시간 알림</li>
+          <li>WebSocket(STOMP) 알림과 상담 콘솔의 알림 벨</li>
+          <li>대기열 기반 1:1 채팅, 상담원이 없으면 문의 티켓으로 전환</li>
+          <li>Next.js 상담 콘솔: 티켓함, 티켓 상세, 채팅, SLA 정책 관리 화면</li>
+        </ul>
+      </div>
+      <div class="box">
+        <h4>소유한 테이블</h4>
+        <div class="tables">
+          <code>ticket</code><code>ticket_history</code><code>ticket_reply</code><code>sla_policy</code><code>notification</code><code>chat_room</code><code>chat_message</code>
+        </div>
+        <p class="note">티켓번호는 DB 시퀀스로 발급해 동시에 접수돼도 겹치지 않습니다. 스키마는 Flyway 마이그레이션으로만 바꾸고, 파일 이름에 작성자 이니셜을 넣었습니다.</p>
+      </div>
+    </div>
+
+    <h3 class="sub">티켓 상태 전이 <span class="mono">TICKET LIFECYCLE</span></h3>
+    <div class="flow">
+      <div class="state"><p class="en">RECEIVED</p><p class="ko">접수</p><p class="by">고객이 문의</p></div>
+      <div class="state"><p class="en">ASSIGNED</p><p class="ko">배정</p><p class="by">자동 · 팀장</p></div>
+      <div class="state"><p class="en">IN_PROGRESS</p><p class="ko">처리 중</p><p class="by">첫 답변</p></div>
+      <div class="state"><p class="en">RESOLVED</p><p class="ko">해결</p><p class="by">설문 발송</p></div>
+      <div class="state last"><p class="en">CLOSED</p><p class="ko">종료</p><p class="by">설문 제출 · 72시간</p></div>
+    </div>
+    <div class="rules">
+      <div class="box">
+        <h4>규칙은 서비스 계층 한 곳에서</h4>
+        <ul class="dots">
+          <li>허용된 전이와 수행자 권한을 함께 검사하고, 어기면 <code>TICKET_INVALID_TRANSITION</code></li>
+          <li>해결 뒤 고객이 다시 답글을 달면 처리 중으로 돌아가는 재문의 처리</li>
+          <li>배정은 처리 중 건수가 가장 적은 상담원, 같으면 가장 오래 쉰 상담원</li>
+          <li>상태 · 배정 · 우선순위 변경은 전부 <code>ticket_history</code>에</li>
+        </ul>
+      </div>
+      <div class="box">
+        <h4>첫 응답 기한 (SLA)</h4>
+        <table class="sla">
+          <thead><tr><th>우선순위</th><th>기한</th><th>경고 시점 (80%)</th></tr></thead>
+          <tbody>
+            <tr><td>긴급</td><td>1시간</td><td><span class="pill">48분</span></td></tr>
+            <tr><td>높음</td><td>4시간</td><td><span class="pill">3시간 12분</span></td></tr>
+            <tr><td>보통</td><td>24시간</td><td><span class="pill">19시간 12분</span></td></tr>
+            <tr><td>낮음</td><td>48시간</td><td><span class="pill">38시간 24분</span></td></tr>
+          </tbody>
+        </table>
+        <p class="note">판정 기준은 첫 답변 시각입니다. 답변을 여러 번 달아도 최초 시각은 덮어쓰지 않습니다.</p>
+      </div>
+    </div>
+
+    <h3 class="sub">직접 해결한 문제 <span class="mono">CHALLENGES</span></h3>
+    <div class="probs">
+      <article class="prob">
+        <div class="txt">
+          <p class="q">동시에 들어온 문의가 같은 상담원에게 중복 배정됐다</p>
+          <p class="lbl">해결</p>
+          <p class="a">배정 트랜잭션에서 티켓 행을 <code>SELECT … FOR UPDATE</code>로 잠그고, 최소 부하 → 마지막 배정 시각 → id 순으로 결과를 고정했습니다.</p>
+        </div>
+        <figure class="code">
+          <figcaption>TicketRepository.java</figcaption>
+<pre><span class="c-k">@Lock</span>(LockModeType.PESSIMISTIC_WRITE)
+<span class="c-k">@Query</span>(<span class="c-s">"select t from Ticket t where t.id = :id"</span>)
+Optional&lt;Ticket&gt; findByIdForUpdate(<span class="c-k">@Param</span>(<span class="c-s">"id"</span>) Long id);</pre>
+        </figure>
+      </article>
+      <article class="prob">
+        <div class="txt">
+          <p class="q">채팅 연결 경합으로 한 고객에게 대기방이 두 개 생겼다</p>
+          <p class="lbl">해결</p>
+          <p class="a">진행 중인 방은 고객당 하나만 있도록 부분 유니크 인덱스로 DB가 강제하게 하고, 방 행을 잠근 뒤 상담원을 연결했습니다.</p>
+        </div>
+        <figure class="code">
+          <figcaption>V…__PMJ_chat_room_active_unique.sql</figcaption>
+<pre><span class="c-k">CREATE UNIQUE INDEX</span> uq_chat_room_active_customer
+  <span class="c-k">ON</span> chat_room(customer_id)
+  <span class="c-k">WHERE</span> status <span class="c-k">IN</span> (<span class="c-s">'WAITING'</span>, <span class="c-s">'OPEN'</span>);</pre>
+        </figure>
+      </article>
+    </div>
+
+    <h3 class="sub">돌아보며 <span class="mono">RETROSPECTIVE</span></h3>
+    <div class="own">
+      <div class="box">
+        <h4>잘된 점</h4>
+        <ul class="dots">
+          <li>문서와 이벤트 · 인터페이스 계약을 먼저 확정해, 구현 중에 설계를 다시 논의할 일이 거의 없었습니다.</li>
+          <li>파일마다 주인을 정하고 남의 코드는 Issue로만 요청해, 서로의 코드를 덮어쓰는 충돌이 없었습니다.</li>
+        </ul>
+      </div>
+      <div class="box">
+        <h4>다음에 바꿀 점</h4>
+        <ul class="dots">
+          <li>테스트가 백엔드에 몰려 프론트 화면은 수동 확인에 기댔습니다.</li>
+          <li>CI가 끝나기 전에도 main 머지가 가능했습니다. 브랜치 보호를 더 엄격히 하겠습니다.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pharmaprice">
+  <div class="wrap">
+    <p class="eyebrow">Mini Project · Solo</p>
+    <h2>약값알림: 약국별 일반의약품 최저가 추천</h2>
+    <p class="intro">가격, 거리, 가격 정보의 신선도를 가중한 점수로 반경 안에서 가장 나은 약국을 추천하는 위치 기반 서비스입니다. 혼자 기획부터 구현까지 진행했습니다.</p>
+    <div class="meta-row">
+      <span><b>기간</b> 2026.09</span>
+      <span><b>역할</b> 개인 구현</span>
+      <span><b>스택</b> Java 21 · Spring Boot · Next.js · TypeScript · PostgreSQL · Python</span>
+      <a href="https://github.com/totot03/miniproject1" target="_blank" rel="noopener">github.com/totot03/miniproject1 ↗</a>
+    </div>
+    <div class="own" style="margin-top:28px">
+      <div class="box">
+        <h4>만든 것</h4>
+        <ul class="dots">
+          <li>가격 · 거리 · 신선도 가중 점수로 약국 순위를 매기는 추천 로직</li>
+          <li>PostgreSQL <code>pg_trgm</code>을 쓴 약 이름 부분 검색</li>
+          <li>카카오맵 API로 지도와 위치 표시</li>
+          <li>Python으로 공공데이터를 가공해 시드 데이터 생성</li>
+        </ul>
+      </div>
+      <div class="box">
+        <h4>코드보다 문서를 먼저</h4>
+        <ul class="dots">
+          <li>PRD, DB 설계, API 명세, 로드맵을 먼저 쓰고 태스크 단위로 구현</li>
+          <li>영수증 인식, 결제처럼 하지 않을 일을 먼저 정해 끝까지 동작하는 범위에 집중</li>
+          <li>DB 시간대가 UTC면 한국 시간 오전 9시 전에 날짜가 하루 밀려 중복 제보 검사가 어긋나는 문제를 막으려고 Asia/Seoul로 고정하고, 이유를 README에 남김</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <p class="eyebrow">How I Work</p>
+    <h2>먼저 정하고, 맡은 건 끝까지</h2>
+    <div class="ways">
+      <div class="box way">
+        <h4>문서로 먼저 설계</h4>
+        <p>무엇을 만들지와 어디까지 만들지를 글로 정해 두고 시작합니다. 중간에 방향이 흔들리면 그 문서로 돌아갑니다.</p>
+        <p class="src">약값알림 PRD · HelpNest 이벤트/포트 계약</p>
+      </div>
+      <div class="box way">
+        <h4>테스트까지 책임</h4>
+        <p>맡은 도메인의 상태 전이, 배정, SLA 판정은 테스트로 확인하고, 기능을 잘게 나눠 PR로 올렸습니다.</p>
+        <p class="src">테스트 클래스 35개 · 백엔드 커밋 173개</p>
+      </div>
+      <div class="box way">
+        <h4>Claude Code를 규칙 안에서</h4>
+        <p>세 명이 각자 Claude Code를 쓰면서도 같은 공용 설정과 파일 소유권 규칙을 지켜, AI가 남의 코드를 건드리지 않게 했습니다.</p>
+        <p class="src">HelpNest 팀 공용 설정 · 변경 요청 Issue</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="wrap">
+    <p class="eyebrow">Skills · Education</p>
+    <h2>프로젝트에서 직접 써 본 기술</h2>
+    <dl class="skills">
+      <div class="skill"><dt>백엔드</dt><dd><span class="chip">Java 21</span><span class="chip">Spring Boot</span><span class="chip">JPA</span><span class="chip">Spring Security · JWT</span><span class="chip">WebSocket · STOMP</span><span class="chip">Flyway</span></dd></div>
+      <div class="skill"><dt>프론트엔드</dt><dd><span class="chip">TypeScript</span><span class="chip">React</span><span class="chip">Next.js</span><span class="chip">TanStack Query</span><span class="chip">Tailwind CSS</span></dd></div>
+      <div class="skill"><dt>AI 활용</dt><dd><span class="chip">Spring AI · LLM 연동</span><span class="chip">Claude Code</span></dd></div>
+      <div class="skill"><dt>DB · 인프라</dt><dd><span class="chip">PostgreSQL</span><span class="chip">Docker Compose</span><span class="chip">AWS (S3 · SES · CloudFront)</span><span class="chip">GitHub Actions</span></dd></div>
+      <div class="skill"><dt>보안 기초</dt><dd><span class="chip">네트워크 보안</span><span class="chip">모의해킹</span><span class="chip">리눅스</span></dd></div>
+    </dl>
+    <p class="skills-note">모두 신입 수준이며, 위 두 프로젝트에서 실제로 사용했습니다.</p>
+
+    <h3 class="sub">학력 · 교육 <span class="mono">EDUCATION</span></h3>
+    <div class="edu">
+      <div class="edu-item">
+        <p class="when">2026.05 – 2026.11</p>
+        <div>
+          <h4>자바와생성형AI를활용한차세대CRM플랫폼개발 6기<span class="badge">수료 예정</span></h4>
+          <p>하이미디어학원 · 918시간 · Java, Spring Boot, AI Automation, AWS, LowCode, 미니 · 메인 프로젝트</p>
+        </div>
+      </div>
+      <div class="edu-item">
+        <p class="when">2022.03 – 2026.02</p>
+        <div>
+          <h4>신구대학교 IT보안과<span class="badge">졸업</span></h4>
+          <p>전문학사 · 네트워크 보안, 모의해킹, 리눅스</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer id="contact">
+  <div class="wrap">
+    <p class="kicker">Contact</p>
+    <h2 style="margin-top:14px">함께 일할 기회를 기다립니다</h2>
+    <dl class="contact">
+      <dt>Email</dt><dd>mjppnara@naver.com</dd>
+      <dt>GitHub</dt><dd>github.com/totot03</dd>
+      <dt>Live</dt><dd>helpnest.kro.kr</dd>
+    </dl>
+    <p class="fine">박민재 · 경기도 성남시 · 신입 개발자</p>
+  </div>
+</footer>

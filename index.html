@@ -32,16 +32,16 @@
   }
 
   * { box-sizing: border-box; }
-  body { margin: 0; background: var(--desk); color: var(--ink); font: 400 16px/1.75 var(--f); letter-spacing: -.01em; word-break: keep-all; -webkit-font-smoothing: antialiased; }
+  body { margin: 0; background: var(--sheet); color: var(--ink); font: 400 16px/1.75 var(--f); letter-spacing: -.01em; word-break: keep-all; -webkit-font-smoothing: antialiased; }
   a { color: inherit; }
   a:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
   h1, h2, h3, h4 { margin: 0; text-wrap: balance; letter-spacing: -.02em; }
   p { margin: 0; }
   code { font-family: var(--f); }
   ::selection { background: var(--ink); color: var(--sheet); }
-  .sheet { max-width: 1240px; margin: clamp(0px, 4vw, 64px) auto; background: var(--sheet); overflow: clip; }
-  .wrap { padding-left: max(20px, env(safe-area-inset-left, 0px), 7vw); padding-right: max(20px, env(safe-area-inset-right, 0px), 7vw); }
-  @media (min-width: 1240px) { .wrap { padding-inline: 88px; } }
+  /* 배경은 화면 끝까지, 내용은 최대 1400px 안에서 가운데 */
+  .sheet { background: var(--sheet); overflow: clip; }
+  .wrap { max-width: 1400px; margin-inline: auto; padding-left: max(20px, env(safe-area-inset-left, 0px), 5vw); padding-right: max(20px, env(safe-area-inset-right, 0px), 5vw); }
   section, header { scroll-margin-top: 56px; }
 
   /* 상단 바: 스크롤해도 따라오는 얇은 메뉴 + 읽은 만큼 차는 진행선 */
@@ -57,12 +57,12 @@
     @keyframes progress { from { transform: scaleX(0); } }
   }
 
-  /* 가운데 큰 이름: 히어로 띠에 반쯤 걸침. 글자 위 절반은 검게, 띠에 걸친 아래 절반은 희게 칠함 */
-  .sheet > .me { display: block; position: relative; z-index: 2; text-align: center; text-decoration: none; color: transparent; background: linear-gradient(var(--ink) 50%, var(--band-ink) 50%); -webkit-background-clip: text; background-clip: text; font-size: clamp(48px, 8vw, 104px); font-weight: 700; line-height: 1; letter-spacing: .32em; padding-left: .32em; margin: clamp(32px, 4vw, 48px) 0 -.5em; }
-  .sheet > .me i { display: none; }
+  /* 큰 이름: 검은 띠 안에 흰색 단색 */
+  .hero .me { display: block; text-decoration: none; color: var(--band-ink); font-size: clamp(56px, 10vw, 148px); font-weight: 700; line-height: 1; letter-spacing: .3em; padding-left: .3em; margin-bottom: clamp(32px, 4vw, 56px); }
+  .hero .me i { display: none; }
 
   /* 히어로: 가운데 정렬 작은 라벨 · 인사 · 연락처 */
-  .hero { background: var(--band); color: var(--band-ink); text-align: center; padding-block: clamp(84px, 10vw, 128px) clamp(56px, 7vw, 88px); }
+  .hero { background: var(--band); color: var(--band-ink); text-align: center; min-height: calc(100svh - 56px); display: grid; align-items: center; padding-block: clamp(64px, 8vw, 112px); }
   .hero .wrap > div { display: flex; flex-direction: column; align-items: center; }
   .kicker { font-size: 12px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: var(--band-muted); }
   .hero h1 { font-size: clamp(22px, 2.4vw, 30px); font-weight: 500; line-height: 1.45; margin: 16px 0 24px; }
@@ -75,9 +75,10 @@
   .btn:hover { background: var(--band-ink); color: var(--band); }
 
   /* 섹션 공통 */
-  section, .facts, footer { border-top: 1px solid var(--rule); }
-  .hero + section { border-top: 0; }
-  section { padding-block: clamp(56px, 6vw, 88px); }
+  /* 섹션 구분: 넓은 위아래 여백 + 배경을 흰색 · 회색 · 검정으로 번갈아 */
+  section { padding-block: clamp(88px, 10vw, 152px); }
+  #projects, #pharmaprice, #education { background: var(--soft); }
+  #pharmaprice .box { background: var(--sheet); }
 
   /* 카드 공통 동작: 위쪽 얇은 선 위로 굵은 선이 왼쪽부터 차오름 */
   .way, .plink { position: relative; border-top: 1px solid var(--rule); padding-top: 16px; }
@@ -110,11 +111,12 @@
   .plink .go a.more { margin-left: auto; color: var(--muted); }
 
   /* 숫자 줄 */
-  .facts .wrap { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: clamp(16px, 2vw, 28px); padding-block: clamp(32px, 4vw, 48px); }
-  .fact { border-left: 1px solid var(--line); padding-left: 16px; }
+  .facts .wrap { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: clamp(16px, 2vw, 28px); padding-block: clamp(64px, 7vw, 104px); }
+  .facts { background: var(--band); color: var(--band-ink); }
+  .fact { border-left: 1px solid rgba(255,255,255,.18); padding-left: 16px; }
   .fact .n { font-size: clamp(32px, 3.4vw, 44px); font-weight: 300; line-height: 1; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
-  .fact .n small { font-size: 13px; font-weight: 500; color: var(--muted); margin-left: 4px; letter-spacing: 0; }
-  .fact .l { font-size: 13.5px; color: var(--muted); margin-top: 12px; }
+  .fact .n small { font-size: 13px; font-weight: 500; color: var(--band-muted); margin-left: 4px; letter-spacing: 0; }
+  .fact .l { font-size: 13.5px; color: var(--band-muted); margin-top: 12px; }
 
   /* 본문 섹션: 왼쪽 1칸 섹션명 · 오른쪽 3칸 본문 */
   main .wrap, footer .wrap { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: clamp(16px, 2vw, 28px); }
@@ -190,11 +192,11 @@
   .edu-item:first-child .badge { background: var(--ink); color: var(--sheet); }
 
   /* 끝 */
-  footer { padding-block: clamp(56px, 6vw, 88px) 40px; }
+  footer { background: var(--band); color: var(--band-ink); padding-block: clamp(88px, 10vw, 152px) 40px; }
+  footer .wrap > .kicker { color: var(--band-ink); }
   footer h2 { font-size: clamp(26px, 3vw, 38px); font-weight: 700; line-height: 1.3; }
-  footer .contact { margin-top: 24px; color: var(--ink); font-size: 15px; }
-  footer .contact dt { color: var(--muted); }
-  footer .fine { margin-top: clamp(40px, 6vw, 72px); padding-top: 16px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); }
+  footer .contact { margin-top: 24px; font-size: 15px; grid-template-columns: auto 1fr; }
+  footer .fine { margin-top: clamp(40px, 6vw, 72px); padding-top: 16px; border-top: 1px solid rgba(255,255,255,.18); font-size: 13px; color: var(--band-muted); }
 
   @media (max-width: 860px) {
     #how .wrap, .plinks, main .wrap, footer .wrap { grid-template-columns: minmax(0, 1fr); }
@@ -213,11 +215,12 @@
   /* 모션: 첫 화면은 이름이 모이며 등장, 아래 내용은 스크롤로 화면에 들어올 때 차례로 떠오름 */
   @media (prefers-reduced-motion: no-preference) {
     html { scroll-behavior: smooth; }
-    .sheet > .me { animation: gather 1.2s var(--ease) both; }
     .hero .wrap > div > * { animation: rise .9s var(--ease) both; }
-    .hero .wrap > div > :nth-child(2) { animation-delay: .15s; }
-    .hero .wrap > div > :nth-child(3) { animation-delay: .3s; }
-    .hero .wrap > div > :nth-child(4) { animation-delay: .45s; }
+    .hero .wrap > div > .me { animation: gather 1.2s var(--ease) both; }
+    .hero .wrap > div > :nth-child(2) { animation-delay: .25s; }
+    .hero .wrap > div > :nth-child(3) { animation-delay: .4s; }
+    .hero .wrap > div > :nth-child(4) { animation-delay: .55s; }
+    .hero .wrap > div > :nth-child(5) { animation-delay: .7s; }
     .tag.live::before { animation: pulse 2s ease-in-out infinite; }
     .rv { opacity: 0; transform: translateY(20px); transition: opacity .8s var(--ease) var(--d, 0ms), transform .8s var(--ease) var(--d, 0ms); }
     .rv.in { opacity: 1; transform: none; }
@@ -239,11 +242,11 @@
   </div>
 </nav>
 
-<a class="me" href="#top"><i></i>박민재</a>
 
 <header class="hero" id="top">
   <div class="wrap">
     <div>
+      <a class="me" href="#top"><i></i>박민재</a>
       <p class="kicker">Junior Developer · Portfolio</p>
       <h1>안녕하세요,<br>신입 개발자<br><span>박민재</span>입니다</h1>
       <dl class="contact">

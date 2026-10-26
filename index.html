@@ -54,30 +54,39 @@
   @media (max-width: 720px) { .nav a.lnk { display: none; } .nav a.lnk.keep { display: inline; } }
 
   /* 히어로: 화면 폭을 채우는 큰 헤드라인 */
-  .hero { padding-block: clamp(40px, 7vw, 96px) clamp(48px, 7vw, 96px); }
-  .hero .wrap { display: grid; gap: clamp(56px, 8vw, 104px); }
-  .hero .wrap > div:first-child { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: end; column-gap: 24px; }
-  .hero .kicker, .hero h1 { grid-column: 1 / -1; justify-self: start; }
-  .hero h1 { font-size: clamp(54px, 11vw, 150px); font-weight: 800; font-stretch: 70%; line-height: .98; letter-spacing: -.035em; margin: 22px 0 clamp(32px, 5vw, 56px); }
+  .hero { padding-block: clamp(32px, 5vw, 64px) clamp(48px, 6vw, 80px); }
+  .hero .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(40px, 5vw, 64px) clamp(32px, 5vw, 72px); align-items: start; }
+  .hero .plinks { grid-column: 1 / -1; }
+  .hero h1 { font-size: clamp(42px, 6.2vw, 84px); font-weight: 800; font-stretch: 72%; line-height: 1.02; letter-spacing: -.03em; margin: 20px 0 32px; }
   .hero h1 span { color: var(--accent); }
   .contact { display: grid; grid-template-columns: auto 1fr; gap: 4px 20px; font-size: 15px; }
   .contact dt { font: 600 11.5px/2.2 var(--f-disp); letter-spacing: .08em; color: var(--muted); text-transform: uppercase; }
   .contact dd { margin: 0; color: var(--ink); user-select: all; }
-  .hero .contact { padding-top: 18px; border-top: 1px solid var(--rule); }
-  .hero .cta { padding-top: 18px; border-top: 1px solid var(--rule); align-self: stretch; }
-  .cta { display: flex; flex-wrap: wrap; gap: 10px; }
+  .hero .contact { padding-top: 16px; border-top: 1px solid var(--rule); }
+  .cta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px; }
   .btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 20px; border-radius: 999px; font-weight: 600; font-size: 14.5px; text-decoration: none; }
   .btn.line { background: var(--ink); color: var(--bg); }
   .btn:hover { filter: brightness(1.2); }
-  @media (max-width: 600px) { .hero .wrap > div:first-child { grid-template-columns: 1fr; } .hero .cta { border-top: 0; } }
+
+  /* 성향 패널: 첫 화면에서 일하는 방식이 바로 보이도록 숲색 카드 */
+  .traits { background: var(--band); color: var(--band-ink); border-radius: 4px; padding: clamp(24px, 3vw, 34px); }
+  .traits .eyebrow { background: var(--band-ink); color: var(--band); }
+  .traits h2 { font-size: clamp(26px, 2.8vw, 36px); margin-top: 14px; }
+  .traits .ways { display: grid; margin-top: 22px; counter-reset: way; }
+  .way { counter-increment: way; display: grid; grid-template-columns: 34px minmax(0, 1fr); column-gap: 8px; padding: 16px 0; border-top: 1px solid var(--band-line); }
+  .way::before { content: counter(way, decimal-leading-zero); grid-row: 1 / span 3; font: 700 13px/1.6 var(--f-disp); color: var(--band-muted); }
+  .way h4 { margin: 0; font-size: 17px; font-weight: 700; }
+  .way p { color: var(--band-ink); opacity: .86; margin-top: 4px; font-size: 14.5px; line-height: 1.6; }
+  .way p.src { font-size: 12.5px; color: var(--band-muted); opacity: 1; margin-top: 6px; }
+  @media (max-width: 880px) { .hero .wrap { grid-template-columns: 1fr; } }
 
   /* 히어로 아래: 프로젝트 바로가기 2열 */
   .plinks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
   .plinks > .lbl { grid-column: 1 / -1; font: 700 clamp(26px, 3vw, 34px)/1 var(--f-disp); font-stretch: 78%; letter-spacing: -.01em; padding-bottom: 18px; border-bottom: 1px solid var(--rule); margin-bottom: 8px; }
-  .plink { background: var(--paper); border-radius: 4px; padding: 26px 28px; display: grid; gap: 12px; align-content: start; transition: transform .2s; }
+  .plink { background: var(--paper); border-radius: 4px; padding: 22px 24px; display: grid; gap: 10px; align-content: start; transition: transform .2s; }
   .plink:hover { transform: translateY(-2px); }
   .plink .top { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
-  .plink h3 { font-size: clamp(30px, 3.4vw, 42px); font-weight: 800; font-stretch: 72%; line-height: 1; margin-right: auto; }
+  .plink h3 { font-size: clamp(26px, 2.6vw, 32px); font-weight: 800; font-stretch: 74%; line-height: 1; margin-right: auto; }
   .tag { font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 999px; background: var(--chip); color: var(--ink-2); }
   .tag.live { background: var(--accent); color: var(--on-accent); }
   .plink p { font-size: 14.5px; color: var(--ink-2); }
@@ -90,24 +99,24 @@
 
   /* 숫자 띠: 짙은 숲색 바탕, 세로 구분선, 라벨 위 · 큰 숫자 아래 */
   .facts { background: var(--band); color: var(--band-ink); }
-  .facts .wrap { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); padding-block: clamp(40px, 6vw, 72px); }
-  .fact { display: flex; flex-direction: column-reverse; justify-content: flex-end; gap: clamp(36px, 6vw, 72px); padding: 4px 16px 4px 0; }
+  .facts .wrap { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); padding-block: clamp(28px, 4vw, 44px); }
+  .fact { display: flex; flex-direction: column-reverse; justify-content: flex-end; gap: clamp(16px, 2.4vw, 28px); padding: 4px 16px 4px 0; }
   .fact + .fact { border-left: 1px solid var(--band-line); padding-left: 20px; }
-  .fact .n { font: 700 clamp(48px, 6.4vw, 88px)/.9 var(--f-disp); font-stretch: 72%; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
+  .fact .n { font: 700 clamp(40px, 4.6vw, 60px)/.9 var(--f-disp); font-stretch: 72%; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
   .fact .n small { font: 600 .26em var(--f-body); color: var(--band-muted); margin-left: 6px; letter-spacing: 0; }
   .fact .l { font-size: 14px; color: var(--band-ink); }
   @media (max-width: 720px) { .facts .wrap { grid-template-columns: 1fr 1fr; row-gap: 32px; } .fact:nth-child(3) { border-left: 0; padding-left: 0; } }
 
   /* 섹션 공통: 위쪽 검은 선으로 구분 */
-  section { padding-block: clamp(64px, 8vw, 112px); }
+  section { padding-block: clamp(56px, 6vw, 88px); }
   section + section .wrap { border-top: 1px solid var(--rule); padding-top: clamp(28px, 3vw, 40px); }
   section + section { padding-top: 0; }
-  h2 { font-size: clamp(34px, 5.2vw, 68px); font-weight: 800; font-stretch: 74%; line-height: 1.05; margin-top: 18px; }
+  h2 { font-size: clamp(28px, 3.6vw, 46px); font-weight: 800; font-stretch: 74%; line-height: 1.05; margin-top: 18px; }
   .intro { color: var(--ink-2); font-size: 17.5px; margin-top: 22px; max-width: 40em; }
   .meta-row { display: flex; flex-wrap: wrap; gap: 8px 28px; margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 14.5px; color: var(--muted); }
   .meta-row b { color: var(--ink); font-weight: 600; margin-right: 4px; }
   .meta-row a { color: var(--ink); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; margin-left: auto; }
-  h3.sub { font-size: clamp(22px, 2.4vw, 28px); font-weight: 700; margin-top: clamp(56px, 7vw, 80px); padding-top: 16px; border-top: 1px solid var(--rule); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 12px; }
+  h3.sub { font-size: clamp(20px, 2vw, 24px); font-weight: 700; margin-top: clamp(40px, 5vw, 60px); padding-top: 16px; border-top: 1px solid var(--rule); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 12px; }
   h3.sub .mono { font: 600 11.5px/1 var(--f-disp); letter-spacing: .08em; color: var(--muted); }
 
   /* 흰 카드 */
@@ -123,9 +132,9 @@
 
   /* 티켓 상태 전이: 번호 붙은 세로 칸, 마지막 단계만 강조 */
   .flow { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); margin-top: 20px; counter-reset: st; }
-  .state { counter-increment: st; padding: 4px 18px 24px; border-left: 1px solid var(--line); min-height: 170px; display: flex; flex-direction: column; }
+  .state { counter-increment: st; padding: 4px 18px 24px; border-left: 1px solid var(--line); min-height: 136px; display: flex; flex-direction: column; }
   .state:last-child { border-right: 1px solid var(--line); }
-  .state::before { content: counter(st, decimal-leading-zero) "."; font: 600 13px/1 var(--f-disp); color: var(--muted); margin-bottom: auto; padding-bottom: 28px; }
+  .state::before { content: counter(st, decimal-leading-zero) "."; font: 600 13px/1 var(--f-disp); color: var(--muted); margin-bottom: auto; padding-bottom: 18px; }
   .state .en { font: 600 10.5px/1 var(--f-disp); letter-spacing: .08em; color: var(--muted); }
   .state .ko { font: 700 24px/1.2 var(--f-disp); margin-top: 8px; }
   .state .by { font-size: 13.5px; color: var(--ink-2); margin-top: 2px; }
@@ -157,23 +166,6 @@
   .c-k { color: #a7f3c9; } .c-s { color: #f5d97a; } .c-c { color: #6f8c7f; }
   @media (max-width: 880px) { .prob { grid-template-columns: 1fr; } }
 
-  /* 일하는 방식: 왼쪽 제목 고정 · 오른쪽 STEP 카드 세로 나열 */
-  #how .wrap { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: clamp(32px, 6vw, 96px); align-items: start; }
-  #how .eyebrow { grid-column: 1; justify-self: start; }
-  #how h2 { grid-column: 1; grid-row: 2; position: sticky; top: 96px; }
-  #how .ways { grid-column: 2; grid-row: 1 / span 2; margin-top: 0; }
-  .ways { display: grid; gap: 12px; margin-top: 28px; counter-reset: way; }
-  .way { counter-increment: way; display: grid; }
-  .way::before { content: "STEP " counter(way, decimal-leading-zero); justify-self: end; font: 600 11px/1 var(--f-disp); letter-spacing: .08em; color: var(--muted); margin-bottom: 10px; }
-  .way h4 { margin: 0; font-size: 19px; font-weight: 700; }
-  .way p { color: var(--ink-2); margin-top: 10px; font-size: 15.5px; }
-  .way .src { font-size: 13px; color: var(--muted); margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--line); }
-  @media (max-width: 880px) {
-    #how .wrap { grid-template-columns: 1fr; }
-    #how h2 { position: static; }
-    #how .ways { grid-column: 1; grid-row: auto; margin-top: 28px; }
-  }
-
   /* 기술 · 학력: 신문처럼 가는 가로선 목록 */
   .skills { display: grid; gap: 0; margin-top: 32px; border-top: 1px solid var(--rule); }
   .skill { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 20px; padding: 18px 0; border-bottom: 1px solid var(--line); }
@@ -192,7 +184,7 @@
   /* 끝: 화면 폭을 채우는 큰 마무리 문장 */
   footer { padding-block: 0 40px; }
   footer .wrap { border-top: 1px solid var(--rule); padding-top: clamp(28px, 3vw, 40px); }
-  footer h2 { font-size: clamp(48px, 10vw, 140px); font-stretch: 70%; line-height: .98; letter-spacing: -.035em; margin-bottom: clamp(32px, 5vw, 56px); }
+  footer h2 { font-size: clamp(36px, 6vw, 84px); font-stretch: 70%; line-height: .98; letter-spacing: -.035em; margin-bottom: clamp(32px, 5vw, 56px); }
   footer .contact { padding-top: 18px; border-top: 1px solid var(--line); max-width: 480px; }
   footer .fine { margin-top: clamp(48px, 7vw, 96px); padding-top: 16px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); }
 
@@ -226,6 +218,28 @@
         <a class="btn line" href="https://github.com/totot03" target="_blank" rel="noopener">GitHub 프로필 ↗</a>
       </div>
     </div>
+
+    <aside class="traits" id="how" aria-label="일하는 방식">
+      <p class="eyebrow">How I Work</p>
+      <h2>먼저 정하고, 맡은 건 끝까지</h2>
+      <div class="ways">
+        <div class="way">
+          <h4>문서로 먼저 설계</h4>
+          <p>무엇을 만들지와 어디까지 만들지를 글로 정해 두고 시작합니다. 중간에 방향이 흔들리면 그 문서로 돌아갑니다.</p>
+          <p class="src">약값알림 PRD · HelpNest 이벤트/포트 계약</p>
+        </div>
+        <div class="way">
+          <h4>테스트까지 책임</h4>
+          <p>맡은 도메인의 상태 전이, 배정, SLA 판정은 테스트로 확인하고, 기능을 잘게 나눠 PR로 올렸습니다.</p>
+          <p class="src">테스트 클래스 35개 · 백엔드 커밋 173개</p>
+        </div>
+        <div class="way">
+          <h4>Claude Code를 규칙 안에서</h4>
+          <p>세 명이 각자 Claude Code를 쓰면서도 같은 공용 설정과 파일 소유권 규칙을 지켜, AI가 남의 코드를 건드리지 않게 했습니다.</p>
+          <p class="src">HelpNest 팀 공용 설정 · 변경 요청 Issue</p>
+        </div>
+      </div>
+    </aside>
 
     <div class="plinks">
       <p class="lbl">Projects</p>
@@ -407,30 +421,6 @@ Optional&lt;Ticket&gt; findByIdForUpdate(<span class="c-k">@Param</span>(<span c
           <li>영수증 인식, 결제처럼 하지 않을 일을 먼저 정해 끝까지 동작하는 범위에 집중</li>
           <li>DB 시간대가 UTC면 한국 시간 오전 9시 전에 날짜가 하루 밀려 중복 제보 검사가 어긋나는 문제를 막으려고 Asia/Seoul로 고정하고, 이유를 README에 남김</li>
         </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="how">
-  <div class="wrap">
-    <p class="eyebrow">How I Work</p>
-    <h2>먼저 정하고, 맡은 건 끝까지</h2>
-    <div class="ways">
-      <div class="box way">
-        <h4>문서로 먼저 설계</h4>
-        <p>무엇을 만들지와 어디까지 만들지를 글로 정해 두고 시작합니다. 중간에 방향이 흔들리면 그 문서로 돌아갑니다.</p>
-        <p class="src">약값알림 PRD · HelpNest 이벤트/포트 계약</p>
-      </div>
-      <div class="box way">
-        <h4>테스트까지 책임</h4>
-        <p>맡은 도메인의 상태 전이, 배정, SLA 판정은 테스트로 확인하고, 기능을 잘게 나눠 PR로 올렸습니다.</p>
-        <p class="src">테스트 클래스 35개 · 백엔드 커밋 173개</p>
-      </div>
-      <div class="box way">
-        <h4>Claude Code를 규칙 안에서</h4>
-        <p>세 명이 각자 Claude Code를 쓰면서도 같은 공용 설정과 파일 소유권 규칙을 지켜, AI가 남의 코드를 건드리지 않게 했습니다.</p>
-        <p class="src">HelpNest 팀 공용 설정 · 변경 요청 Issue</p>
       </div>
     </div>
   </div>

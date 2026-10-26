@@ -19,17 +19,17 @@
     --f: "Pretendard Variable", Pretendard, -apple-system, "Malgun Gothic", system-ui, sans-serif;
     --f-code: ui-monospace, Consolas, monospace;
     --ease: cubic-bezier(.2, .7, .2, 1);
-    /* 유일한 강조색: 파랑 */
-    --accent: #2563eb; --accent-band: #5b8cff;
+    /* 유일한 강조색: 보라 */
+    --accent: #7c3aed; --accent-band: #a78bfa;
   }
   @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
     --desk: #0a0a0a; --sheet: #161616; --ink: #eeeeee; --ink-2: #bbbbbb; --muted: #8a8a8a; --line: #2a2a2a; --rule: #444444; --soft: #1e1e1e;
-    --band: #000000; --code-bg: #0c0c0c; --accent: #6b9bff;
+    --band: #000000; --code-bg: #0c0c0c; --accent: #a78bfa;
     color-scheme: dark;
   } }
   :root[data-theme="dark"] {
     --desk: #0a0a0a; --sheet: #161616; --ink: #eeeeee; --ink-2: #bbbbbb; --muted: #8a8a8a; --line: #2a2a2a; --rule: #444444; --soft: #1e1e1e;
-    --band: #000000; --code-bg: #0c0c0c; --accent: #6b9bff;
+    --band: #000000; --code-bg: #0c0c0c; --accent: #a78bfa;
     color-scheme: dark;
   }
 
@@ -64,8 +64,26 @@
   .hero .me i { display: none; }
 
   /* 히어로: 왼쪽 정렬 이름 · 라벨 · 인사 · 연락처 */
-  .hero { background: var(--band); color: var(--band-ink); text-align: left; min-height: calc(100svh - 56px); display: grid; align-items: center; padding-block: clamp(64px, 8vw, 112px); }
-  .hero .wrap { width: 100%; }
+  .hero { background-color: var(--band); background-image: linear-gradient(90deg, var(--band) 30%, transparent), linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px); background-size: 100% 100%, 48px 48px, 48px 48px; color: var(--band-ink); text-align: left; min-height: calc(100svh - 56px); display: grid; align-items: center; padding-block: clamp(64px, 8vw, 112px); }
+  .hero .wrap { width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); align-items: center; gap: clamp(32px, 5vw, 80px); }
+
+  /* 히어로 장식: 코드 에디터 · 터미널 · 커밋 그래프 (선과 막대만, 강조는 보라 하나) */
+  .hero-art { width: 100%; max-width: 640px; height: auto; justify-self: end; overflow: visible; }
+  .hero-art .ha-frame { fill: #1a1a1a; stroke: rgba(255,255,255,.22); }
+  .hero-art .ha-line { stroke: rgba(255,255,255,.22); stroke-width: 1.5; }
+  .hero-art .ha-dot { fill: rgba(255,255,255,.22); }
+  .hero-art .ha-dim { fill: rgba(255,255,255,.16); }
+  .hero-art .ha-mid { fill: rgba(255,255,255,.4); }
+  .hero-art .ha-hi { fill: rgba(255,255,255,.72); }
+  .hero-art .ha-acc, .hero-art .ha-cursor { fill: var(--accent-band); }
+  .hero-art .ha-acc-s, .hero-art .ha-branch { fill: none; stroke: var(--accent-band); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+  .hero-art .ha-tag { fill: none; stroke: rgba(255,255,255,.5); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+  .hero-art .ha-ring { fill: none; stroke: rgba(255,255,255,.18); stroke-dasharray: 4 6; }
+  .hero-art .ha-node { fill: var(--band); stroke: rgba(255,255,255,.55); stroke-width: 2; }
+  .hero-art .ha-node.acc { stroke: var(--accent-band); }
+  .hero-art .ha-head { fill: var(--accent-band); }
+  .hero-art .ha-head-ring { fill: none; stroke: var(--accent-band); stroke-width: 2; opacity: 0; }
+  @media (max-width: 860px) { .hero .wrap { grid-template-columns: minmax(0, 1fr); } .hero-art { display: none; } }
   .hero .wrap > div { display: flex; flex-direction: column; align-items: flex-start; }
   .kicker { font-size: 12px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: var(--band-muted); }
   .hero h1 { font-size: clamp(22px, 2.4vw, 30px); font-weight: 500; line-height: 1.45; margin: 16px 0 24px; }
@@ -224,11 +242,19 @@
     .hero .wrap > div > :nth-child(4) { animation-delay: .55s; }
     .hero .wrap > div > :nth-child(5) { animation-delay: .7s; }
     .tag.live::before { animation: pulse 2s ease-in-out infinite; }
+    .hero-art { animation: rise 1s var(--ease) .3s both; }
+    .hero-art .bar { transform-box: fill-box; transform-origin: left center; animation: bar .6s var(--ease) both; animation-delay: calc(var(--r) * 90ms + .6s); }
+    .hero-art .ha-cursor { animation: pulse 1s steps(1) infinite; }
+    .hero-art .ha-branch { stroke-dasharray: 260; stroke-dashoffset: 260; animation: draw 1.4s var(--ease) 1.2s forwards; }
+    .hero-art .ha-head-ring { transform-box: fill-box; transform-origin: center; animation: ring 2.4s ease-out 2s infinite; }
     .rv { opacity: 0; transform: translateY(20px); transition: opacity .8s var(--ease) var(--d, 0ms), transform .8s var(--ease) var(--d, 0ms); }
     .rv.in { opacity: 1; transform: none; }
   }
   @keyframes rise { from { opacity: 0; transform: translateY(16px); } }
   @keyframes pulse { 50% { opacity: .25; } }
+  @keyframes bar { from { transform: scaleX(0); } }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  @keyframes ring { from { transform: scale(1); opacity: .8; } to { transform: scale(2.8); opacity: 0; } }
   @media (prefers-reduced-motion: reduce) { .way::after, .plink::after { transition: none; } }
 </style>
 
@@ -258,6 +284,36 @@
         <a class="btn line" href="https://github.com/totot03" target="_blank" rel="noopener">GitHub 프로필 ↗</a>
       </div>
     </div>
+    <svg class="hero-art" viewBox="0 0 600 480" aria-hidden="true" focusable="false">
+      <circle class="ha-ring" cx="34" cy="430" r="28"/>
+      <g class="ha-tag"><polyline points="496,14 482,28 496,42"/><line class="ha-acc-s" x1="512" y1="44" x2="526" y2="12"/><polyline points="542,14 556,28 542,42"/></g>
+      <rect class="ha-frame" x="40" y="30" width="420" height="300" rx="12"/>
+      <line class="ha-line" x1="40" y1="70" x2="460" y2="70"/>
+      <circle class="ha-dot" cx="66" cy="50" r="5"/><circle class="ha-dot" cx="86" cy="50" r="5"/><circle class="ha-dot" cx="106" cy="50" r="5"/>
+      <rect class="ha-dim" x="140" y="46" width="80" height="8" rx="4"/>
+      <g class="ha-code">
+        <g style="--r:0"><rect class="ha-dim" x="64" y="92" width="14" height="8" rx="4"/><rect class="bar ha-acc" x="96" y="92" width="56" height="8" rx="4"/><rect class="bar ha-mid" x="160" y="92" width="120" height="8" rx="4"/></g>
+        <g style="--r:1"><rect class="ha-dim" x="64" y="116" width="14" height="8" rx="4"/><rect class="bar ha-mid" x="120" y="116" width="90" height="8" rx="4"/><rect class="bar ha-dim" x="218" y="116" width="140" height="8" rx="4"/></g>
+        <g style="--r:2"><rect class="ha-dim" x="64" y="140" width="14" height="8" rx="4"/><rect class="bar ha-hi" x="120" y="140" width="70" height="8" rx="4"/><rect class="bar ha-acc" x="198" y="140" width="48" height="8" rx="4"/><rect class="bar ha-mid" x="254" y="140" width="100" height="8" rx="4"/></g>
+        <g style="--r:3"><rect class="ha-dim" x="64" y="164" width="14" height="8" rx="4"/><rect class="bar ha-mid" x="144" y="164" width="150" height="8" rx="4"/></g>
+        <g style="--r:4"><rect class="ha-dim" x="64" y="188" width="14" height="8" rx="4"/><rect class="bar ha-dim" x="144" y="188" width="60" height="8" rx="4"/><rect class="bar ha-hi" x="212" y="188" width="110" height="8" rx="4"/></g>
+        <g style="--r:5"><rect class="ha-dim" x="64" y="212" width="14" height="8" rx="4"/><rect class="bar ha-mid" x="120" y="212" width="40" height="8" rx="4"/></g>
+        <g style="--r:6"><rect class="ha-dim" x="64" y="236" width="14" height="8" rx="4"/></g>
+        <g style="--r:7"><rect class="ha-dim" x="64" y="260" width="14" height="8" rx="4"/><rect class="bar ha-acc" x="120" y="260" width="64" height="8" rx="4"/><rect class="bar ha-mid" x="192" y="260" width="130" height="8" rx="4"/></g>
+        <g style="--r:8"><rect class="ha-dim" x="64" y="284" width="14" height="8" rx="4"/><rect class="bar ha-mid" x="96" y="284" width="30" height="8" rx="4"/></g>
+        <rect class="ha-cursor" x="134" y="280" width="3" height="16"/>
+      </g>
+      <line class="ha-line" x1="530" y1="60" x2="530" y2="446"/>
+      <path class="ha-branch" d="M530 180 C530 212 570 208 570 240 L570 330 C570 362 530 358 530 390"/>
+      <circle class="ha-node" cx="530" cy="100" r="7"/><circle class="ha-node" cx="530" cy="180" r="7"/>
+      <circle class="ha-node acc" cx="570" cy="260" r="7"/><circle class="ha-node acc" cx="570" cy="310" r="7"/>
+      <circle class="ha-node" cx="530" cy="440" r="7"/>
+      <circle class="ha-head-ring" cx="530" cy="390" r="7"/><circle class="ha-head" cx="530" cy="390" r="7"/>
+      <rect class="ha-frame" x="110" y="350" width="300" height="104" rx="10"/>
+      <polyline class="ha-acc-s" points="130,378 136,384 130,390"/><rect class="ha-mid" x="146" y="380" width="150" height="8" rx="4"/>
+      <rect class="ha-dim" x="130" y="406" width="90" height="8" rx="4"/><rect class="ha-dim" x="228" y="406" width="60" height="8" rx="4"/>
+      <polyline class="ha-acc-s" points="130,434 135,439 144,428"/><rect class="ha-hi" x="154" y="430" width="110" height="8" rx="4"/>
+    </svg>
   </div>
 </header>
 

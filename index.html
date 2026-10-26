@@ -19,26 +19,28 @@
     --f: "Pretendard Variable", Pretendard, -apple-system, "Malgun Gothic", system-ui, sans-serif;
     --f-code: ui-monospace, Consolas, monospace;
     --ease: cubic-bezier(.2, .7, .2, 1);
+    /* 유일한 강조색: 파랑 */
+    --accent: #2563eb; --accent-band: #5b8cff;
   }
   @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
     --desk: #0a0a0a; --sheet: #161616; --ink: #eeeeee; --ink-2: #bbbbbb; --muted: #8a8a8a; --line: #2a2a2a; --rule: #444444; --soft: #1e1e1e;
-    --band: #000000; --code-bg: #0c0c0c;
+    --band: #000000; --code-bg: #0c0c0c; --accent: #6b9bff;
     color-scheme: dark;
   } }
   :root[data-theme="dark"] {
     --desk: #0a0a0a; --sheet: #161616; --ink: #eeeeee; --ink-2: #bbbbbb; --muted: #8a8a8a; --line: #2a2a2a; --rule: #444444; --soft: #1e1e1e;
-    --band: #000000; --code-bg: #0c0c0c;
+    --band: #000000; --code-bg: #0c0c0c; --accent: #6b9bff;
     color-scheme: dark;
   }
 
   * { box-sizing: border-box; }
   body { margin: 0; background: var(--sheet); color: var(--ink); font: 400 16px/1.75 var(--f); letter-spacing: -.01em; word-break: keep-all; -webkit-font-smoothing: antialiased; }
   a { color: inherit; }
-  a:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
   h1, h2, h3, h4 { margin: 0; text-wrap: balance; letter-spacing: -.02em; }
   p { margin: 0; }
   code { font-family: var(--f); }
-  ::selection { background: var(--ink); color: var(--sheet); }
+  ::selection { background: var(--accent); color: #ffffff; }
   /* 배경은 화면 끝까지, 내용은 최대 1400px 안에서 가운데 */
   .sheet { background: var(--sheet); overflow: clip; }
   .wrap { max-width: 1400px; margin-inline: auto; padding-left: max(20px, env(safe-area-inset-left, 0px), 5vw); padding-right: max(20px, env(safe-area-inset-right, 0px), 5vw); }
@@ -50,23 +52,24 @@
   .nav a.lnk { font-size: 14px; text-decoration: none; color: var(--ink-2); background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; padding-bottom: 2px; }
   .nav a.lnk:hover { color: var(--ink); background-size: 100% 1px; }
   .nav a.lnk.keep { border: 1px solid var(--ink); color: var(--ink); padding: 6px 20px; background: none; }
-  .nav a.lnk.keep:hover { background: var(--ink); color: var(--sheet); }
+  .nav a.lnk.keep:hover { background: var(--accent); border-color: var(--accent); color: #ffffff; }
   @media (max-width: 720px) { .nav a.lnk { display: none; } .nav a.lnk.keep { display: inline; } }
   @supports (animation-timeline: scroll()) {
-    .nav::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--ink); transform-origin: 0 50%; animation: progress linear both; animation-timeline: scroll(root); }
+    .nav::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--accent); transform-origin: 0 50%; animation: progress linear both; animation-timeline: scroll(root); }
     @keyframes progress { from { transform: scaleX(0); } }
   }
 
-  /* 큰 이름: 검은 띠 안에 흰색 단색 */
-  .hero .me { display: block; text-decoration: none; color: var(--band-ink); font-size: clamp(56px, 10vw, 148px); font-weight: 700; line-height: 1; letter-spacing: .3em; padding-left: .3em; margin-bottom: clamp(32px, 4vw, 56px); }
+  /* 이름: 검은 띠 안 왼쪽, 흰색 단색 */
+  .hero .me { display: block; text-decoration: none; color: var(--band-ink); font-size: clamp(44px, 6vw, 80px); font-weight: 700; line-height: 1.1; letter-spacing: -.02em; margin-bottom: clamp(24px, 3vw, 40px); }
   .hero .me i { display: none; }
 
-  /* 히어로: 가운데 정렬 작은 라벨 · 인사 · 연락처 */
-  .hero { background: var(--band); color: var(--band-ink); text-align: center; min-height: calc(100svh - 56px); display: grid; align-items: center; padding-block: clamp(64px, 8vw, 112px); }
-  .hero .wrap > div { display: flex; flex-direction: column; align-items: center; }
+  /* 히어로: 왼쪽 정렬 이름 · 라벨 · 인사 · 연락처 */
+  .hero { background: var(--band); color: var(--band-ink); text-align: left; min-height: calc(100svh - 56px); display: grid; align-items: center; padding-block: clamp(64px, 8vw, 112px); }
+  .hero .wrap { width: 100%; }
+  .hero .wrap > div { display: flex; flex-direction: column; align-items: flex-start; }
   .kicker { font-size: 12px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: var(--band-muted); }
   .hero h1 { font-size: clamp(22px, 2.4vw, 30px); font-weight: 500; line-height: 1.45; margin: 16px 0 24px; }
-  .hero h1 span { font-weight: 700; }
+  .hero h1 span { font-weight: 700; color: var(--accent-band); }
   .contact { display: grid; grid-template-columns: auto auto; gap: 2px 16px; font-size: 14px; text-align: left; }
   .contact dt { font-size: 11.5px; font-weight: 500; letter-spacing: .1em; line-height: 2.1; text-transform: uppercase; color: var(--band-muted); }
   .contact dd { margin: 0; user-select: all; }
@@ -82,7 +85,7 @@
 
   /* 카드 공통 동작: 위쪽 얇은 선 위로 굵은 선이 왼쪽부터 차오름 */
   .way, .plink { position: relative; border-top: 1px solid var(--rule); padding-top: 16px; }
-  .way::after, .plink::after { content: ""; position: absolute; left: 0; top: -1px; height: 2px; width: 100%; background: var(--ink); transform: scaleX(.12); transform-origin: 0 50%; transition: transform .6s var(--ease); }
+  .way::after, .plink::after { content: ""; position: absolute; left: 0; top: -1px; height: 2px; width: 100%; background: var(--accent); transform: scaleX(.12); transform-origin: 0 50%; transition: transform .6s var(--ease); }
   .way:hover::after, .plink:hover::after { transform: scaleX(1); }
 
   /* 머리글 + 카드 그리드형 섹션 (일하는 방식 · 프로젝트) */
@@ -91,7 +94,7 @@
   #how .eyebrow { grid-column: 4; grid-row: 1; justify-self: end; align-self: center; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
   #how .ways { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(16px, 2vw, 28px); margin-top: clamp(32px, 4vw, 48px); counter-reset: way; }
   .way { counter-increment: way; display: flex; flex-direction: column; }
-  .way::before { content: counter(way, decimal-leading-zero); font-size: 12px; font-weight: 600; color: var(--muted); font-variant-numeric: tabular-nums; }
+  .way::before { content: counter(way, decimal-leading-zero); font-size: 12px; font-weight: 600; color: var(--accent); font-variant-numeric: tabular-nums; }
   .way h4 { font-size: 17px; font-weight: 600; margin-top: 8px; }
   .way p { font-size: 15px; color: var(--ink-2); margin-top: 8px; }
   .way p.src { font-size: 13px; color: var(--muted); margin-top: auto; padding-top: 16px; }
@@ -101,12 +104,12 @@
   .plink .top { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; }
   .plink h3 { font-size: 20px; font-weight: 600; margin-right: auto; }
   .tag { font-size: 12.5px; color: var(--muted); }
-  .tag.live { color: var(--ink); font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
+  .tag.live { color: var(--accent); font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
   .tag.live::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
   .plink p { font-size: 15px; color: var(--ink-2); }
   .plink .go { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 8px; font-size: 14px; }
   .plink .go a { text-decoration: underline; text-decoration-color: var(--rule); text-underline-offset: 4px; color: var(--ink-2); transition: color .2s, text-decoration-color .2s; }
-  .plink .go a:hover { color: var(--ink); text-decoration-color: currentColor; }
+  .plink .go a:hover { color: var(--accent); text-decoration-color: currentColor; }
   .plink .go a.main { color: var(--ink); font-weight: 600; text-decoration-color: currentColor; }
   .plink .go a.more { margin-left: auto; color: var(--muted); }
 
@@ -156,7 +159,7 @@
   table.sla th { text-align: left; font-size: 11.5px; font-weight: 500; letter-spacing: .06em; color: var(--muted); padding-bottom: 8px; }
   table.sla td { padding: 8px 0; border-top: 1px solid var(--line); color: var(--ink-2); }
   table.sla td:first-child { font-weight: 600; color: var(--ink); }
-  .pill { font-size: 13.5px; font-weight: 600; color: var(--ink); border-bottom: 1px solid var(--ink); }
+  .pill { font-size: 13.5px; font-weight: 600; color: var(--accent); border-bottom: 1px solid currentColor; }
 
   /* 문제 해결: 글 · 코드 */
   .probs { display: grid; gap: 16px; margin-top: 16px; }
@@ -185,11 +188,11 @@
   .edu-item { display: grid; grid-template-columns: 168px minmax(0, 1fr); gap: 16px; padding: 24px 0; border-bottom: 1px solid var(--line); position: relative; }
   .edu-item .when { font-size: 14px; font-weight: 500; color: var(--ink-2); font-variant-numeric: tabular-nums; line-height: 1.75; padding-left: 20px; position: relative; }
   .edu-item .when::before { content: ""; position: absolute; left: 0; top: .6em; width: 7px; height: 7px; border-radius: 50%; border: 1.5px solid var(--ink); background: var(--sheet); }
-  .edu-item:first-child .when::before { background: var(--ink); }
+  .edu-item:first-child .when::before { background: var(--accent); border-color: var(--accent); }
   .edu-item h4 { font-size: 17px; font-weight: 600; line-height: 1.5; }
   .edu-item p { font-size: 15px; color: var(--ink-2); margin-top: 4px; }
   .badge { display: inline-block; font-size: 12px; font-weight: 600; line-height: 1; padding: 4px 10px; border: 1px solid var(--ink); border-radius: 999px; margin-left: 8px; vertical-align: 3px; }
-  .edu-item:first-child .badge { background: var(--ink); color: var(--sheet); }
+  .edu-item:first-child .badge { background: var(--accent); border-color: var(--accent); color: #ffffff; }
 
   /* 끝 */
   footer { background: var(--band); color: var(--band-ink); padding-block: clamp(88px, 10vw, 152px) 40px; }
@@ -216,7 +219,6 @@
   @media (prefers-reduced-motion: no-preference) {
     html { scroll-behavior: smooth; }
     .hero .wrap > div > * { animation: rise .9s var(--ease) both; }
-    .hero .wrap > div > .me { animation: gather 1.2s var(--ease) both; }
     .hero .wrap > div > :nth-child(2) { animation-delay: .25s; }
     .hero .wrap > div > :nth-child(3) { animation-delay: .4s; }
     .hero .wrap > div > :nth-child(4) { animation-delay: .55s; }
@@ -225,7 +227,6 @@
     .rv { opacity: 0; transform: translateY(20px); transition: opacity .8s var(--ease) var(--d, 0ms), transform .8s var(--ease) var(--d, 0ms); }
     .rv.in { opacity: 1; transform: none; }
   }
-  @keyframes gather { from { opacity: 0; letter-spacing: .7em; } }
   @keyframes rise { from { opacity: 0; transform: translateY(16px); } }
   @keyframes pulse { 50% { opacity: .25; } }
   @media (prefers-reduced-motion: reduce) { .way::after, .plink::after { transition: none; } }

@@ -6,395 +6,398 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="신입 개발자 박민재 - HelpNest 티켓·SLA·실시간 채팅, 약값알림">
 <link rel="preload" href="fonts/PretendardVariable.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Antonio:wght@400;500;600&family=Orbitron:wght@700;800&display=swap">
 <style>
-  /* 레이아웃: 매거진(SPACE) 스타일. 회색 바탕 위 흰 종이 한 장, 가운데 큰 이름 + 검은 띠 히어로,
-     섹션은 왼쪽 1칸 제목 + 오른쪽 3칸 본문, 섹션 사이 얇은 선. 무채색 + Pretendard 하나.
-     간격은 4px 배수로만 씀 */
+  /* 레이아웃: 종이 한 장 위의 작업 목록. 큰 좁은 영문 제목(PORTFOLIO · PROJECTS · LET'S TALK),
+     가는 선으로 나눈 줄, 알약 모양 작은 버튼, 검은 미디어 블록. 무채색 + 강조색 보라 하나.
+     글꼴: 큰 영문 제목 Antonio, 그 밖의 모든 글 Pretendard, 코드만 고정폭 */
   @font-face { font-family: "Pretendard Variable"; font-weight: 45 920; font-style: normal; font-display: swap; src: url("fonts/PretendardVariable.woff2") format("woff2-variations"), url("fonts/PretendardVariable.woff2") format("woff2"); }
   :root {
-    --desk: #e4e4e4; --sheet: #ffffff; --ink: #111111; --ink-2: #444444; --muted: #888888; --line: #e6e6e6; --rule: #c4c4c4; --soft: #f5f5f5;
-    /* 히어로 띠 · 코드 블록은 두 테마 모두 검정 */
-    --band: #111111; --band-ink: #f5f5f5; --band-muted: #9a9a9a;
-    --code-bg: #111111; --code-ink: #e6e6e6;
+    --paper: #efefec; --sheet: #f8f8f6; --pill: #e2e2de; --ink: #121212; --ink-2: #3b3b39; --muted: #67675f; --line: #d3d3ce; --black: #0d0d0d; --on-black: #f2f2ef; --on-black-2: #a3a39e;
+    /* 강조색 하나: 핵심 숫자 · 상태 · 이름 · 목록 표시에만 */
+    --accent: #6d28d9; --accent-soft: #e6dcf7; --accent-on-black: #c4b5fd;
     --f: "Pretendard Variable", Pretendard, -apple-system, "Malgun Gothic", system-ui, sans-serif;
-    --f-code: ui-monospace, Consolas, monospace;
+    --f-d: "Antonio", "Arial Narrow", "Pretendard Variable", sans-serif;
+    --f-code: ui-monospace, Consolas, "Pretendard Variable", monospace;
     --ease: cubic-bezier(.2, .7, .2, 1);
-    /* 유일한 강조색: 보라 */
-    --accent: #7c3aed; --accent-band: #a78bfa;
-  }
-  @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
-    --desk: #0a0a0a; --sheet: #161616; --ink: #eeeeee; --ink-2: #bbbbbb; --muted: #8a8a8a; --line: #2a2a2a; --rule: #444444; --soft: #1e1e1e;
-    --band: #000000; --code-bg: #0c0c0c; --accent: #a78bfa;
-    color-scheme: dark;
-  } }
-  :root[data-theme="dark"] {
-    --desk: #0a0a0a; --sheet: #161616; --ink: #eeeeee; --ink-2: #bbbbbb; --muted: #8a8a8a; --line: #2a2a2a; --rule: #444444; --soft: #1e1e1e;
-    --band: #000000; --code-bg: #0c0c0c; --accent: #a78bfa;
-    color-scheme: dark;
+    color-scheme: light;
   }
 
   * { box-sizing: border-box; }
-  body { margin: 0; background: var(--sheet); color: var(--ink); font: 400 16px/1.75 var(--f); letter-spacing: -.01em; word-break: keep-all; -webkit-font-smoothing: antialiased; }
+  html { background: var(--paper); }
+  body { margin: 0; color: var(--ink); font: 400 16px/1.75 var(--f); letter-spacing: -.01em; word-break: keep-all; -webkit-font-smoothing: antialiased; background: transparent; }
+  /* 배경: 흰 석고 질감 사진을 화면에 고정. 글자가 잘 읽히도록 종이색을 반쯤 덮음 */
+  .texture { position: fixed; inset: 0; z-index: -1; background: var(--paper) url("media/texture.jpg") center / cover no-repeat; pointer-events: none; }
+  .texture::after { content: ""; position: absolute; inset: 0; background: var(--paper); opacity: .4; }
+  body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--paper); }
   a { color: inherit; }
-  a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
-  h1, h2, h3, h4 { margin: 0; text-wrap: balance; letter-spacing: -.02em; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  h1, h2, h3, h4 { margin: 0; text-wrap: balance; }
   p { margin: 0; }
-  code { font-family: var(--f); }
+  /* 문단 마지막 줄에 한 단어만 남지 않도록 줄바꿈을 고르게 */
+  p, li { text-wrap: pretty; }
   ::selection { background: var(--accent); color: #ffffff; }
-  /* 배경은 화면 끝까지, 내용은 최대 1400px 안에서 가운데 */
-  .sheet { background: var(--sheet); overflow: clip; }
-  .wrap { max-width: 1400px; margin-inline: auto; padding-left: max(20px, env(safe-area-inset-left, 0px), 5vw); padding-right: max(20px, env(safe-area-inset-right, 0px), 5vw); }
-  section, header { scroll-margin-top: 56px; }
+  .wrap { max-width: 1320px; margin-inline: auto; padding-left: max(20px, env(safe-area-inset-left, 0px), 3vw); padding-right: max(20px, env(safe-area-inset-right, 0px), 3vw); }
+  section, header, footer { scroll-margin-top: 72px; }
 
-  /* 상단 바: 스크롤해도 따라오는 얇은 메뉴 + 읽은 만큼 차는 진행선 */
-  .nav { position: sticky; top: 0; z-index: 20; background: color-mix(in srgb, var(--sheet) 90%, transparent); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--line); padding-top: env(safe-area-inset-top, 0px); }
-  .nav .wrap { display: flex; justify-content: flex-end; align-items: center; gap: 24px; height: 56px; }
-  .nav a.lnk { font-size: 14px; text-decoration: none; color: var(--ink-2); background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat; padding-bottom: 2px; }
-  .nav a.lnk:hover { color: var(--ink); background-size: 100% 1px; }
-  .nav a.lnk.keep { border: 1px solid var(--ink); color: var(--ink); padding: 6px 20px; background: none; }
-  .nav a.lnk.keep:hover { background: var(--accent); border-color: var(--accent); color: #ffffff; }
-  @media (max-width: 720px) { .nav a.lnk { display: none; } .nav a.lnk.keep { display: inline; } }
-  @supports (animation-timeline: scroll()) {
-    .nav::after { content: ""; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--accent); transform-origin: 0 50%; animation: progress linear both; animation-timeline: scroll(root); }
-    @keyframes progress { from { transform: scaleX(0); } }
+  /* 공용 조각 */
+  .pill { display: inline-flex; align-items: center; gap: 6px; padding: 9px 16px; border-radius: 999px; background: var(--pill); font-size: 14px; font-weight: 500; line-height: 1; color: var(--ink); text-decoration: none; white-space: nowrap; transition: background .2s, color .2s; }
+  a.pill:hover { background: var(--ink); color: var(--paper); }
+  .pill.dark { background: var(--ink); color: var(--paper); }
+  a.pill.dark:hover, a.pill:hover { background: var(--accent); color: #ffffff; }
+  .tag { display: inline-block; padding: 4px 11px; border-radius: 999px; background: var(--pill); font-size: 13px; font-weight: 500; line-height: 1.4; color: var(--ink-2); }
+  .band .tag, .band .pill:not(.dark):not(:hover), .band code { background: #ebebe7; }
+  .tag.hl { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+  .on-black .tag { background: rgba(255,255,255,.14); color: var(--on-black); }
+  .stage h2 em { font-style: normal; color: var(--accent-on-black); }
+  .arrow { display: grid; place-items: center; width: 64px; height: 64px; border-radius: 50%; background: rgba(242,242,239,.88); color: var(--ink); text-decoration: none; transition: transform .35s var(--ease), background .2s; }
+  .arrow svg { width: 22px; height: 22px; }
+  .arrow:hover { transform: scale(1.08); background: var(--accent); color: #ffffff; }
+  .disp { font-family: var(--f-d); font-weight: 500; text-transform: uppercase; letter-spacing: -.01em; line-height: .86; }
+  .kv { display: flex; flex-wrap: wrap; gap: 8px 32px; }
+  .kv div { display: grid; gap: 2px; }
+  .kv dt { font-size: 13px; color: var(--muted); }
+  .kv dd { margin: 0; font-size: 15px; font-weight: 500; }
+
+  /* 상단 바 */
+  .nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: color-mix(in srgb, var(--paper) 92%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+  .nav .wrap { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; padding-block: 16px; }
+  .logo { font-size: 17px; font-weight: 800; letter-spacing: .02em; text-transform: uppercase; text-decoration: none; }
+  .nav ul { display: flex; gap: 8px; margin: 0; padding: 0; list-style: none; overflow-x: auto; scrollbar-width: none; }
+  @media (max-width: 640px) { .nav ul { width: 100%; } }
+
+  /* 첫 화면: 큰 PORTFOLIO + 영상 블록 */
+  .hero { padding-top: clamp(24px, 4vw, 56px); }
+  .hero-title { display: flex; align-items: flex-start; gap: 12px; }
+  .hero-title h1 { font-size: clamp(56px, 11vw, 152px); }
+  .hero-title sup { font: 500 15px/1 var(--f); color: var(--ink-2); margin-top: 1.2em; }
+  .hero-sub { display: flex; flex-wrap: wrap; gap: 6px 20px; margin-top: clamp(16px, 2vw, 24px); font-size: 15px; color: var(--muted); }
+  .hero-sub b { color: var(--ink); font-weight: 500; }
+  .stage { position: relative; margin-top: 20px; aspect-ratio: 16 / 7.6; max-width: 100%; background: var(--black); overflow: hidden; isolation: isolate; color: var(--on-black); }
+  /* 배너 그림: 검은 바탕 위로 헥스 덤프 팝업 창이 계단처럼 떠오름. 창 색은 강조색(보라)의 밝은 톤 */
+  .hexfx { --hx: var(--accent-on-black); position: absolute; inset: 0; z-index: -2; overflow: hidden; }
+  .hexfx .dump { position: absolute; top: 0; right: 3%; margin: 0; font: 400 clamp(11px, 1.05vw, 15px)/1.8 var(--f-code); color: rgba(255,255,255,.08); white-space: pre; }
+  .pop { position: absolute; width: clamp(260px, 34vw, 480px); background: #000; border: 1px solid var(--hx); animation: pop-in .3s steps(3) both; }
+  .pop .bar { height: 12px; background: var(--hx); }
+  .pop .x { position: absolute; top: 20px; right: 14px; font: 700 13px/1 var(--f-code); color: #fff; }
+  .pop h5 { margin: 18px 0 12px; text-align: center; font: 800 clamp(15px, 1.6vw, 24px)/1 "Orbitron", var(--f-d); letter-spacing: .06em; color: #fff; }
+  .pop pre { margin: 0 16px; min-height: 8.7em; font: 400 clamp(8.5px, .8vw, 11.5px)/1.45 var(--f-code); color: #fff; white-space: pre; overflow: hidden; }
+  .pop .seq { margin: 12px 0 14px; text-align: center; font: 700 clamp(11px, 1.1vw, 16px)/1 "Orbitron", var(--f-d); color: #fff; }
+  .pop .prog { height: 8px; width: 0; background: var(--hx); animation: prog 2.6s linear forwards; }
+  .pop.out { animation: pop-out .25s steps(3) forwards; }
+  /* 팝업 애니메이션 위 전체를 덮는 반투명 막: 글자가 잘 보이게 */
+  .stage::before { content: ""; position: absolute; inset: 0; z-index: -1; background: rgba(0,0,0,.4); }
+  .stage-in { position: absolute; inset: auto 0 0 0; display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; padding: clamp(20px, 3.4vw, 48px); }
+  .stage h2 { font-size: clamp(26px, 3vw, 40px); font-weight: 700; line-height: 1.25; letter-spacing: -.03em; }
+  .stage .motto { margin-top: 16px; font-size: clamp(14px, 1.2vw, 16px); line-height: 1.75; color: var(--on-black-2); }
+  .stage .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 20px; }
+  @media (max-width: 760px) {
+    .stage { aspect-ratio: auto; min-height: 520px; }
+    .stage::before { background: rgba(0,0,0,.62); }
+    .stage-in { flex-direction: column; align-items: flex-start; }
   }
 
-  /* 이름: 검은 띠 안 왼쪽, 흰색 단색 */
-  .hero .me { display: block; text-decoration: none; color: var(--band-ink); font-size: clamp(44px, 6vw, 80px); font-weight: 700; line-height: 1.1; letter-spacing: -.02em; margin-bottom: clamp(24px, 3vw, 40px); }
-  .hero .me i { display: none; }
+  /* 흐르는 기술 띠: 배너 아래 한 줄. 움직임 줄이기 설정이면 멈춘 채로 보임 */
+  .ticker { margin-top: clamp(40px, 5vw, 64px); border-block: 1px solid var(--ink); overflow: hidden; }
+  .ticker .track { display: flex; width: max-content; }
+  .ticker ul { display: flex; align-items: center; gap: 28px; margin: 0; padding: 14px 14px; list-style: none; font: 500 clamp(22px, 2.4vw, 32px)/1 var(--f-d); text-transform: uppercase; white-space: nowrap; }
+  .ticker li { display: flex; align-items: center; gap: 28px; }
+  .ticker li::after { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
 
-  /* 히어로: 왼쪽 정렬 이름 · 라벨 · 인사 · 연락처 */
-  .hero { background-color: var(--band); background-image: linear-gradient(90deg, var(--band) 30%, transparent), linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px); background-size: 100% 100%, 48px 48px, 48px 48px; color: var(--band-ink); text-align: left; min-height: calc(100svh - 56px); display: grid; align-items: center; padding-block: clamp(64px, 8vw, 112px); }
-  .hero .wrap { width: 100%; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); align-items: center; gap: clamp(32px, 5vw, 80px); }
-
-  /* 히어로 장식: 코드 에디터 · 터미널 · 커밋 그래프 (선과 막대만, 강조는 보라 하나) */
-  .hero-art { width: 100%; max-width: 640px; height: auto; justify-self: end; overflow: visible; }
-  .hero-art .ha-frame { fill: #1a1a1a; stroke: rgba(255,255,255,.22); }
-  .hero-art .ha-line { stroke: rgba(255,255,255,.22); stroke-width: 1.5; }
-  .hero-art .ha-dot { fill: rgba(255,255,255,.22); }
-  .hero-art .ha-dim { fill: rgba(255,255,255,.16); }
-  .hero-art .ha-mid { fill: rgba(255,255,255,.4); }
-  .hero-art .ha-hi { fill: rgba(255,255,255,.72); }
-  .hero-art .ha-acc, .hero-art .ha-cursor { fill: var(--accent-band); }
-  .hero-art .ha-acc-s, .hero-art .ha-branch { fill: none; stroke: var(--accent-band); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
-  .hero-art .ha-tag { fill: none; stroke: rgba(255,255,255,.5); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
-  .hero-art .ha-ring { fill: none; stroke: rgba(255,255,255,.18); stroke-dasharray: 4 6; }
-  .hero-art .ha-node { fill: var(--band); stroke: rgba(255,255,255,.55); stroke-width: 2; }
-  .hero-art .ha-node.acc { stroke: var(--accent-band); }
-  .hero-art .ha-head { fill: var(--accent-band); }
-  .hero-art .ha-head-ring { fill: none; stroke: var(--accent-band); stroke-width: 2; opacity: 0; }
-  @media (max-width: 860px) { .hero .wrap { grid-template-columns: minmax(0, 1fr); } .hero-art { display: none; } }
-  .hero .wrap > div { display: flex; flex-direction: column; align-items: flex-start; }
-  .kicker { font-size: 12px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase; color: var(--band-muted); }
-  .hero h1 { font-size: clamp(22px, 2.4vw, 30px); font-weight: 500; line-height: 1.45; margin: 16px 0 24px; }
-  .hero h1 span { font-weight: 700; color: var(--accent-band); }
-  .contact { display: grid; grid-template-columns: auto auto; gap: 2px 16px; font-size: 14px; text-align: left; }
-  .contact dt { font-size: 11.5px; font-weight: 500; letter-spacing: .1em; line-height: 2.1; text-transform: uppercase; color: var(--band-muted); }
-  .contact dd { margin: 0; user-select: all; }
-  .cta { margin-top: 24px; }
-  .btn { display: inline-block; font-size: 14px; text-decoration: none; padding: 8px 24px; border: 1px solid currentColor; transition: background .25s, color .25s; }
-  .btn:hover { background: var(--band-ink); color: var(--band); }
-
-  /* 섹션 공통 */
-  /* 섹션 구분: 넓은 위아래 여백 + 배경을 흰색 · 회색 · 검정으로 번갈아 */
+  /* 섹션 머리: 좁은 영문 제목 + 한글 부제 */
   section { padding-block: clamp(88px, 10vw, 152px); }
-  #projects, #pharmaprice, #education { background: var(--soft); }
-  #pharmaprice .box { background: var(--sheet); }
+  /* 섹션 구분: 질감 바탕 섹션과 밝은 종이 띠 섹션을 번갈아 둠 */
+  .band { background: var(--sheet); border-block: 1px solid var(--line); }
+  .head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 32px; padding-bottom: clamp(24px, 3vw, 40px); border-bottom: 1px solid var(--ink); }
+  .head h2 { font-size: clamp(36px, 4.6vw, 60px); }
+  /* 부제는 검은 선 바로 위(12px 띄움)에 붙임: 머리 아래 여백만큼 내려 줌 */
+  .head p { position: relative; top: calc(clamp(24px, 3vw, 40px) - 12px); font-size: 16px; color: var(--ink-2); }
+  /* 넓은 화면에서는 부제를 한 줄로, 좁은 화면에서만 줄바꿈 */
+  @media (min-width: 761px) { .head p { white-space: nowrap; } }
+  .head sup { font: 500 15px/1 var(--f); vertical-align: top; margin-left: 8px; letter-spacing: 0; }
 
-  /* 카드 공통 동작: 위쪽 얇은 선 위로 굵은 선이 왼쪽부터 차오름 */
-  .way, .plink { position: relative; border-top: 1px solid var(--rule); padding-top: 16px; }
-  .way::after, .plink::after { content: ""; position: absolute; left: 0; top: -1px; height: 2px; width: 100%; background: var(--accent); transform: scaleX(.12); transform-origin: 0 50%; transition: transform .6s var(--ease); }
-  .way:hover::after, .plink:hover::after { transform: scaleX(1); }
+  /* 일하는 방식 */
+  .ways { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .way { padding: 28px 28px 32px 0; display: flex; flex-direction: column; gap: 12px; }
+  .way + .way { padding-left: 28px; border-left: 1px solid var(--line); }
+  .way h3 { font-size: 20px; font-weight: 700; letter-spacing: -.02em; }
+  .way p { font-size: 15px; color: var(--ink-2); }
+  .way .src { margin-top: auto; padding-top: 8px; font-size: 14px; color: var(--muted); }
+  @media (max-width: 860px) { .ways { grid-template-columns: minmax(0, 1fr); } .way, .way + .way { padding: 24px 0; border-left: 0; } .way + .way { border-top: 1px solid var(--line); } }
 
-  /* 머리글 + 카드 그리드형 섹션 (일하는 방식 · 프로젝트) */
-  #how .wrap, .plinks { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: clamp(16px, 2vw, 28px); }
-  #how h2, .plinks > .lbl { grid-column: 1 / 4; grid-row: 1; font-size: clamp(22px, 2.2vw, 28px); font-weight: 600; line-height: 1.3; }
-  #how .eyebrow { grid-column: 4; grid-row: 1; justify-self: end; align-self: center; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
-  #how .ways { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(16px, 2vw, 28px); margin-top: clamp(32px, 4vw, 48px); counter-reset: way; }
-  .way { counter-increment: way; display: flex; flex-direction: column; }
-  .way::before { content: counter(way, decimal-leading-zero); font-size: 12px; font-weight: 600; color: var(--accent); font-variant-numeric: tabular-nums; }
-  .way h4 { font-size: 17px; font-weight: 600; margin-top: 8px; }
-  .way p { font-size: 15px; color: var(--ink-2); margin-top: 8px; }
-  .way p.src { font-size: 13px; color: var(--muted); margin-top: auto; padding-top: 16px; }
+  /* 프로젝트 줄: 왼쪽 글, 오른쪽 검은 블록 */
+  .proj { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(20px, 3vw, 40px); padding-block: 24px; border-bottom: 1px solid var(--line); }
+  .proj .txt { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+  .proj h3 { font-size: clamp(32px, 3.2vw, 44px); }
+  .proj h3.ko { font-family: var(--f); font-weight: 800; text-transform: none; letter-spacing: -.04em; line-height: 1.05; font-size: clamp(28px, 2.8vw, 38px); }
+  .proj .when { font: 400 22px/1 var(--f-d); color: var(--ink-2); }
+  .proj .desc { font-size: 15px; color: var(--ink-2); max-width: 30em; margin-top: 6px; }
+  .proj .kv { margin-top: auto; padding-top: 24px; }
+  .proj .links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .shot { position: relative; min-height: 300px; background: var(--black); color: var(--on-black); display: flex; flex-direction: column; justify-content: center; padding: clamp(24px, 3vw, 40px); overflow: hidden; }
+  .shot .arrow { position: absolute; right: 20px; bottom: 20px; }
+  .flowline { display: grid; gap: 4px; font: 500 clamp(22px, 2.2vw, 30px)/1.15 var(--f-d); text-transform: uppercase; color: var(--on-black-2); }
+  .flowline span:last-child { color: var(--accent-on-black); }
+  .flowline i { font-style: normal; color: #5a5a56; margin-right: 10px; }
+  .formula { font-size: clamp(28px, 3vw, 42px); font-weight: 800; letter-spacing: -.05em; line-height: 1.15; }
+  .formula span { color: var(--accent-on-black); font-weight: 400; }
+  .shot .cap { margin-top: 20px; font-size: 14px; color: var(--on-black-2); }
+  @media (max-width: 860px) { .proj { grid-template-columns: minmax(0, 1fr); } .shot { min-height: 240px; } }
 
-  .plinks > .lbl { margin-bottom: clamp(32px, 4vw, 48px); }
-  .plink { grid-column: span 2; display: flex; flex-direction: column; gap: 8px; }
-  .plink .top { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 12px; }
-  .plink h3 { font-size: 20px; font-weight: 600; margin-right: auto; }
-  .tag { font-size: 12.5px; color: var(--muted); }
-  .tag.live { color: var(--accent); font-weight: 600; display: inline-flex; align-items: center; gap: 6px; }
-  .tag.live::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
-  .plink p { font-size: 15px; color: var(--ink-2); }
-  .plink .go { display: flex; flex-wrap: wrap; gap: 8px 20px; margin-top: 8px; font-size: 14px; }
-  .plink .go a { text-decoration: underline; text-decoration-color: var(--rule); text-underline-offset: 4px; color: var(--ink-2); transition: color .2s, text-decoration-color .2s; }
-  .plink .go a:hover { color: var(--accent); text-decoration-color: currentColor; }
-  .plink .go a.main { color: var(--ink); font-weight: 600; text-decoration-color: currentColor; }
-  .plink .go a.more { margin-left: auto; color: var(--muted); }
+  .facts { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .fact { padding: 28px 20px 0 0; }
+  .fact + .fact { padding-left: 20px; border-left: 1px solid var(--line); }
+  .fact .n { font: 500 clamp(40px, 4vw, 56px)/.95 var(--f-d); color: var(--accent); letter-spacing: -.01em; font-variant-numeric: tabular-nums; }
+  .fact .l { margin-top: 12px; font-size: 15px; color: var(--ink-2); }
+  @media (max-width: 860px) { .facts { grid-template-columns: repeat(2, minmax(0, 1fr)); row-gap: 28px; } .fact:nth-child(3) { padding-left: 0; border-left: 0; } }
 
-  /* 숫자 줄 */
-  .facts .wrap { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: clamp(16px, 2vw, 28px); padding-block: clamp(64px, 7vw, 104px); }
-  .facts { background: var(--band); color: var(--band-ink); }
-  .fact { border-left: 1px solid rgba(255,255,255,.18); padding-left: 16px; }
-  .fact .n { font-size: clamp(32px, 3.4vw, 44px); font-weight: 300; line-height: 1; letter-spacing: -.03em; font-variant-numeric: tabular-nums; }
-  .fact .n small { font-size: 13px; font-weight: 500; color: var(--band-muted); margin-left: 4px; letter-spacing: 0; }
-  .fact .l { font-size: 13.5px; color: var(--band-muted); margin-top: 12px; }
+  /* 상세: 가는 선 위 왼쪽 소제목 · 오른쪽 내용 */
+  .lead { font-size: clamp(18px, 1.6vw, 21px); line-height: 1.7; font-weight: 500; letter-spacing: -.02em; max-width: 36em; padding-block: 32px; }
+  .meta-pills { display: flex; flex-wrap: wrap; gap: 6px; padding-bottom: 32px; }
+  .row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 3fr); gap: 16px clamp(24px, 4vw, 64px); padding-block: 32px; border-top: 1px solid var(--line); }
+  .row > h3 { font-size: 18px; font-weight: 700; letter-spacing: -.02em; }
+  .row > h3 small { display: block; margin-top: 4px; font-size: 14px; font-weight: 400; color: var(--muted); }
+  .row > div { min-width: 0; }
+  @media (max-width: 860px) { .row { grid-template-columns: minmax(0, 1fr); } }
 
-  /* 본문 섹션: 왼쪽 1칸 섹션명 · 오른쪽 3칸 본문 */
-  main .wrap, footer .wrap { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: clamp(16px, 2vw, 28px); }
-  main .wrap > *, footer .wrap > * { grid-column: 2 / -1; min-width: 0; }
-  main .wrap > .eyebrow, footer .wrap > .kicker { grid-column: 1; grid-row: 1; font-size: 13px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--ink); line-height: 1.5; padding-top: 6px; }
-  main h2 { font-size: clamp(24px, 2.4vw, 32px); font-weight: 700; line-height: 1.3; }
-  .intro { color: var(--ink-2); font-size: 16.5px; margin-top: 16px; max-width: 40em; }
-  .meta-row { display: flex; flex-wrap: wrap; gap: 8px 24px; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 14px; color: var(--muted); }
-  .meta-row b { color: var(--ink); font-weight: 600; margin-right: 4px; }
-  .meta-row a { color: var(--ink); text-underline-offset: 4px; }
-  h3.sub { font-size: 17px; font-weight: 600; margin-top: clamp(44px, 5vw, 60px); padding-top: 12px; border-top: 1px solid var(--ink); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 8px; }
-  h3.sub .mono { font-size: 11.5px; font-weight: 500; letter-spacing: .12em; color: var(--muted); }
-
-  /* 회색 카드 */
-  .own { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 16px; margin-top: 16px; }
-  .box { background: var(--soft); padding: 24px; min-width: 0; }
-  .box h4 { margin-bottom: 12px; font-size: 15px; font-weight: 600; }
-  ul.dots { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
-  ul.dots li { position: relative; padding-left: 16px; font-size: 15px; color: var(--ink-2); }
-  ul.dots li::before { content: ""; position: absolute; left: 0; top: .85em; width: 8px; height: 1px; background: var(--ink); }
+  ul.list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+  ul.list li { position: relative; padding-left: 22px; font-size: 15px; color: var(--ink-2); }
+  ul.list li::before { content: ""; position: absolute; left: 0; top: .82em; width: 10px; height: 2px; background: var(--accent); }
+  code { font-family: var(--f-code); font-size: .88em; padding: 1px 6px; border-radius: 4px; background: var(--pill); color: var(--ink); }
+  .two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px clamp(24px, 3vw, 48px); }
+  .two h4 { font-size: 15px; font-weight: 700; margin-bottom: 12px; }
+  /* 나란한 두 목록(잘된 점 · 다음에 바꿀 점)은 같은 번째 항목끼리 같은 줄에서 시작하게 맞춤 */
+  .two.pair { row-gap: 10px; }
+  .two.pair > div { display: grid; grid-row: span 3; grid-template-rows: subgrid; }
+  .two.pair ul.list { grid-row: span 2; grid-template-rows: subgrid; }
+  @media (max-width: 760px) { .two.pair > div + div { margin-top: 14px; } }
+  @media (max-width: 760px) { .two { grid-template-columns: minmax(0, 1fr); } }
+  .note { margin-top: 16px; font-size: 14px; color: var(--muted); }
   .tables { display: flex; flex-wrap: wrap; gap: 6px; }
-  .tables code { font-size: 13px; padding: 2px 10px; border: 1px solid var(--rule); background: var(--sheet); }
-  .box .note { font-size: 14px; color: var(--muted); margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--line); }
 
-  /* 티켓 상태 전이 */
-  .flow { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); margin-top: 16px; counter-reset: st; }
-  .state { counter-increment: st; padding: 4px 16px 20px; border-left: 1px solid var(--line); display: flex; flex-direction: column; transition: background .3s; }
-  .state:hover { background: var(--soft); }
-  .state::before { content: counter(st, decimal-leading-zero); font-size: 12px; font-weight: 600; color: var(--muted); padding-bottom: 24px; }
-  .state .en { font-size: 11px; font-weight: 500; letter-spacing: .08em; color: var(--muted); }
-  .state .ko { font-size: 20px; font-weight: 600; margin-top: 4px; }
-  .state .by { font-size: 13.5px; color: var(--ink-2); }
-  .state.last, .state.last:hover { background: var(--band); color: var(--band-ink); border-color: transparent; padding-top: 12px; }
-  .state.last::before, .state.last .en, .state.last .by { color: var(--band-muted); }
-  .rules { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; margin-top: 16px; }
+  .flow { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); border: 1px solid var(--ink); }
+  .state { padding: 16px; display: grid; gap: 2px; }
+  .state + .state { border-left: 1px solid var(--line); }
+  .state .en { font: 500 15px/1.2 var(--f-d); text-transform: uppercase; color: var(--muted); }
+  .state .ko { font-size: 18px; font-weight: 700; }
+  .state .by { font-size: 13px; color: var(--ink-2); }
+  .state.last { background: var(--accent); color: #ffffff; }
+  .state.last .en, .state.last .by { color: var(--accent-soft); }
+  @media (max-width: 760px) { .flow { grid-template-columns: minmax(0, 1fr); } .state + .state { border-left: 0; border-top: 1px solid var(--line); } }
+
   table.sla { width: 100%; border-collapse: collapse; font-size: 15px; font-variant-numeric: tabular-nums; }
-  table.sla th { text-align: left; font-size: 11.5px; font-weight: 500; letter-spacing: .06em; color: var(--muted); padding-bottom: 8px; }
-  table.sla td { padding: 8px 0; border-top: 1px solid var(--line); color: var(--ink-2); }
-  table.sla td:first-child { font-weight: 600; color: var(--ink); }
-  .pill { font-size: 13.5px; font-weight: 600; color: var(--accent); border-bottom: 1px solid currentColor; }
+  table.sla th { text-align: left; font-size: 13px; font-weight: 500; color: var(--muted); padding-bottom: 8px; }
+  table.sla td { padding: 10px 0; border-top: 1px solid var(--line); color: var(--ink-2); }
+  table.sla td:first-child { font-weight: 700; color: var(--ink); }
+  table.sla td:last-child { font-weight: 600; color: var(--accent); }
 
-  /* 문제 해결: 글 · 코드 */
-  .probs { display: grid; gap: 16px; margin-top: 16px; }
-  .prob { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); background: var(--soft); }
-  .prob .txt { padding: 24px; }
-  .prob .q { font-size: 17px; font-weight: 600; line-height: 1.5; }
-  .prob .lbl { font-size: 11.5px; font-weight: 600; letter-spacing: .1em; color: var(--muted); margin-top: 16px; }
-  .prob .a { font-size: 15px; color: var(--ink-2); margin-top: 4px; }
-  figure.code { margin: 0; background: var(--code-bg); display: flex; flex-direction: column; min-width: 0; }
-  figure.code figcaption { font: 500 12px/1 var(--f-code); color: #8a8a8a; padding: 14px 20px; border-bottom: 1px solid rgba(255,255,255,.1); }
-  figure.code pre { margin: 0; padding: 16px 20px; font: 500 13px/1.7 var(--f-code); color: var(--code-ink); overflow-x: auto; flex: 1; align-content: center; }
-  .c-k { color: #ffffff; font-weight: 700; } .c-s { color: #a8a8a8; } .c-c { color: #6a6a6a; }
+  .prob { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 0; }
+  .prob + .prob { margin-top: 24px; }
+  .prob .t { padding: 4px 32px 4px 0; display: grid; align-content: start; gap: 6px; }
+  .prob .k { font-size: 13px; font-weight: 600; color: var(--muted); }
+  .prob .k.fix { color: var(--accent); }
+  .prob .k + .q { margin-bottom: 14px; }
+  .prob .q { font-size: 17px; font-weight: 700; line-height: 1.5; letter-spacing: -.02em; }
+  .prob .a { font-size: 15px; color: var(--ink-2); }
+  figure.code { margin: 0; background: var(--black); color: var(--on-black); min-width: 0; display: flex; flex-direction: column; }
+  figure.code figcaption { padding: 12px 20px; font: 400 12px/1 var(--f-code); color: var(--on-black-2); border-bottom: 1px solid rgba(255,255,255,.1); }
+  figure.code pre { margin: 0; padding: 20px; font: 400 13px/1.8 var(--f-code); overflow-x: auto; flex: 1; align-content: center; }
+  .c-k { color: #ffffff; font-weight: 700; } .c-s { color: #a5a5a0; }
+  @media (max-width: 860px) { .prob { grid-template-columns: minmax(0, 1fr); } .prob .t { padding: 0 0 20px; } }
 
-  /* 기술 */
-  .skills { margin: 24px 0 0; border-top: 1px solid var(--ink); }
-  .skill { display: grid; grid-template-columns: 136px minmax(0, 1fr); gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--line); }
-  .skill dt { font-size: 15px; font-weight: 600; }
-  .skill dd { margin: 0; display: flex; flex-wrap: wrap; gap: 4px 16px; }
-  .chip { font-size: 15px; color: var(--ink-2); }
-  .skills-note { font-size: 13.5px; color: var(--muted); margin-top: 12px; }
+  /* 기술 · 학력 */
+  .skill { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 3fr); gap: 8px clamp(24px, 4vw, 64px); padding-block: 18px; border-top: 1px solid var(--line); }
+  .skill dt { font-size: 15px; font-weight: 700; }
+  .skill dd { margin: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+  .skills { margin: 0; }
+  .skills-note { padding-block: 16px 0; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); }
+  .edu { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 3fr); gap: 8px clamp(24px, 4vw, 64px); padding-block: 24px; border-top: 1px solid var(--line); }
+  .edu .when { font: 400 22px/1.1 var(--f-d); }
+  .edu h4 { font-size: 18px; font-weight: 700; letter-spacing: -.02em; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; }
+  .edu p { margin-top: 6px; font-size: 15px; color: var(--ink-2); }
+  @media (max-width: 760px) { .skill, .edu { grid-template-columns: minmax(0, 1fr); } }
 
-  /* 학력 · 교육: 왼쪽 섹션명, 오른쪽 세로 타임라인 */
-  #education .wrap > h3.sub { grid-column: 1; grid-row: 1; margin: 0; padding: 6px 0 0; border: 0; display: block; font-size: 13px; font-weight: 600; letter-spacing: .1em; line-height: 1.5; }
-  #education h3.sub .mono { display: block; margin-top: 4px; }
-  .edu { position: relative; border-top: 1px solid var(--ink); }
-  .edu-item { display: grid; grid-template-columns: 168px minmax(0, 1fr); gap: 16px; padding: 24px 0; border-bottom: 1px solid var(--line); position: relative; }
-  .edu-item .when { font-size: 14px; font-weight: 500; color: var(--ink-2); font-variant-numeric: tabular-nums; line-height: 1.75; padding-left: 20px; position: relative; }
-  .edu-item .when::before { content: ""; position: absolute; left: 0; top: .6em; width: 7px; height: 7px; border-radius: 50%; border: 1.5px solid var(--ink); background: var(--sheet); }
-  .edu-item:first-child .when::before { background: var(--accent); border-color: var(--accent); }
-  .edu-item h4 { font-size: 17px; font-weight: 600; line-height: 1.5; }
-  .edu-item p { font-size: 15px; color: var(--ink-2); margin-top: 4px; }
-  .badge { display: inline-block; font-size: 12px; font-weight: 600; line-height: 1; padding: 4px 10px; border: 1px solid var(--ink); border-radius: 999px; margin-left: 8px; vertical-align: 3px; }
-  .edu-item:first-child .badge { background: var(--accent); border-color: var(--accent); color: #ffffff; }
+  /* 마무리: LET'S TALK */
+  footer { padding-block: clamp(88px, 10vw, 152px) 28px; }
+  .talk { padding-top: clamp(24px, 3vw, 40px); border-top: 1px solid var(--ink); }
+  .talk h2 { font-size: clamp(56px, 11vw, 152px); white-space: nowrap; }
+  .talk-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; margin-top: clamp(24px, 3vw, 40px); }
+  .contact { display: grid; gap: 2px; font-size: 15px; }
+  .contact a { text-decoration: none; }
+  .contact a:hover { color: var(--accent); text-decoration: underline; text-underline-offset: 4px; }
+  .contact .mail { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+  .copy { font: 500 12px/1 var(--f); padding: 6px 10px; border: 0; border-radius: 999px; background: var(--pill); color: var(--ink); cursor: pointer; }
+  .copy:hover { background: var(--ink); color: var(--paper); }
+  .talk-row .say { font-size: clamp(18px, 1.8vw, 24px); font-weight: 700; line-height: 1.4; letter-spacing: -.03em; }
+  .bottom { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px; margin-top: 32px; }
+  .fine { margin-top: 20px; font-size: 13px; color: var(--muted); }
+  @media (max-width: 760px) { .talk-row { grid-template-columns: minmax(0, 1fr); } }
 
-  /* 끝 */
-  footer { background: var(--band); color: var(--band-ink); padding-block: clamp(88px, 10vw, 152px) 40px; }
-  footer .wrap > .kicker { color: var(--band-ink); }
-  footer h2 { font-size: clamp(26px, 3vw, 38px); font-weight: 700; line-height: 1.3; }
-  footer .contact { margin-top: 24px; font-size: 15px; grid-template-columns: auto 1fr; }
-  footer .fine { margin-top: clamp(40px, 6vw, 72px); padding-top: 16px; border-top: 1px solid rgba(255,255,255,.18); font-size: 13px; color: var(--band-muted); }
+  /* 큰 제목 글자 하나씩 올라오기 (글자는 처음부터 보이고, 재생할 때만 아래에서 올라옴) */
+  .split { overflow: hidden; padding-bottom: .12em; margin-bottom: -.12em; } /* 좁은 줄 간격에서 글자 아래가 잘리지 않게 여유 */
+  .split .ch { display: inline-block; }
 
-  @media (max-width: 860px) {
-    #how .wrap, .plinks, main .wrap, footer .wrap { grid-template-columns: minmax(0, 1fr); }
-    #how h2, .plinks > .lbl, main .wrap > *, footer .wrap > *, .plink, #how .ways, #education .wrap > h3.sub { grid-column: 1; grid-row: auto; }
-    #how .eyebrow { grid-column: 1; grid-row: auto; justify-self: start; margin-top: 8px; }
-    #how .ways, .own, .rules, .prob { grid-template-columns: minmax(0, 1fr); }
-    .plink + .plink { margin-top: 32px; }
-    main .wrap > .eyebrow, footer .wrap > .kicker, #education .wrap > h3.sub { margin-bottom: 16px; }
-    .flow { grid-template-columns: 1fr 1fr; }
-    .state { border-left: 0; border-top: 1px solid var(--line); padding-left: 0; }
-    .state.last { grid-column: 1 / -1; padding-left: 16px; }
-    .facts .wrap { grid-template-columns: 1fr 1fr; row-gap: 28px; }
-  }
-  @media (max-width: 560px) { .skill, .edu-item { grid-template-columns: minmax(0, 1fr); gap: 4px; } }
-
-  /* 모션: 첫 화면은 이름이 모이며 등장, 아래 내용은 스크롤로 화면에 들어올 때 차례로 떠오름 */
+  /* 모션: 첫 화면 등장, 큰 제목 글자 순서대로, 스크롤에 맞춰 떠오름, 숫자 세기, 기술 띠 흐름.
+     모두 움직임 줄이기 설정이면 꺼지고, 스크롤 연동을 못 쓰는 브라우저에서는 그냥 정지 상태로 보임 */
   @media (prefers-reduced-motion: no-preference) {
     html { scroll-behavior: smooth; }
-    .hero .wrap > div > * { animation: rise .9s var(--ease) both; }
-    .hero .wrap > div > :nth-child(2) { animation-delay: .25s; }
-    .hero .wrap > div > :nth-child(3) { animation-delay: .4s; }
-    .hero .wrap > div > :nth-child(4) { animation-delay: .55s; }
-    .hero .wrap > div > :nth-child(5) { animation-delay: .7s; }
-    .tag.live::before { animation: pulse 2s ease-in-out infinite; }
-    .hero-art { animation: rise 1s var(--ease) .3s both; }
-    .hero-art .bar { transform-box: fill-box; transform-origin: left center; animation: bar .6s var(--ease) both; animation-delay: calc(var(--r) * 90ms + .6s); }
-    .hero-art .ha-cursor { animation: pulse 1s steps(1) infinite; }
-    .hero-art .ha-branch { stroke-dasharray: 260; stroke-dashoffset: 260; animation: draw 1.4s var(--ease) 1.2s forwards; }
-    .hero-art .ha-head-ring { transform-box: fill-box; transform-origin: center; animation: ring 2.4s ease-out 2s infinite; }
-    .rv { opacity: 0; transform: translateY(20px); transition: opacity .8s var(--ease) var(--d, 0ms), transform .8s var(--ease) var(--d, 0ms); }
-    .rv.in { opacity: 1; transform: none; }
+    .hero-title .split .ch, .talk.go .split .ch { animation: letter 1s var(--ease) both; animation-delay: calc(var(--i) * 45ms + .1s); }
+    .hero-title sup, .hero-sub { animation: rise .9s var(--ease) .5s both; }
+    .stage { animation: stage-in 1.2s var(--ease) .35s both; }
+    .ticker .track { animation: flow 38s linear infinite; }
+    .ticker:hover .track { animation-play-state: paused; }
+  
+    /* 프로젝트 줄에 올리면 화살표가 돌고 상태 단계가 차례로 밀림 */
+    .shot .arrow { transition: transform .45s var(--ease), background .2s; }
+    .proj:hover .shot .arrow { transform: rotate(45deg); }
+    .flowline span { transition: transform .45s var(--ease); }
+    .proj:hover .flowline span { transform: translateX(12px); }
+    .proj:hover .flowline span:nth-child(2) { transition-delay: 40ms; } .proj:hover .flowline span:nth-child(3) { transition-delay: 80ms; }
+    .proj:hover .flowline span:nth-child(4) { transition-delay: 120ms; } .proj:hover .flowline span:nth-child(5) { transition-delay: 160ms; }
+
+    @supports (animation-timeline: view()) {
+      .head h2, .head p, .way, .proj .txt, .fact, .lead, .row, .skill, .edu { animation: up linear both; animation-timeline: view(); animation-range: entry 0% cover 22%; }
+      .head { animation: line linear both; animation-timeline: view(); animation-range: entry 0% cover 30%; }
+      .shot { animation: open linear both; animation-timeline: view(); animation-range: entry 0% cover 35%; }
+      }
   }
-  @keyframes rise { from { opacity: 0; transform: translateY(16px); } }
-  @keyframes pulse { 50% { opacity: .25; } }
-  @keyframes bar { from { transform: scaleX(0); } }
-  @keyframes draw { to { stroke-dashoffset: 0; } }
-  @keyframes ring { from { transform: scale(1); opacity: .8; } to { transform: scale(2.8); opacity: 0; } }
-  @media (prefers-reduced-motion: reduce) { .way::after, .plink::after { transition: none; } }
+  @keyframes rise { from { opacity: 0; transform: translateY(18px); } }
+  @keyframes letter { from { transform: translateY(105%); } }
+  @keyframes stage-in { from { clip-path: inset(10% 6% 10% 6%); } }
+  @keyframes flow { to { transform: translateX(-50%); } }
+  @keyframes up { from { opacity: .2; transform: translateY(36px); } }
+  @keyframes line { from { border-bottom-color: transparent; } }
+  @keyframes open { from { clip-path: inset(14% 10% 14% 10%); } }
+  @keyframes pop-in { from { opacity: 0; transform: scale(.92); } }
+  @keyframes pop-out { to { opacity: 0; transform: scale(.96); } }
+  @keyframes prog { to { width: 72%; } }
+  @media (prefers-reduced-motion: reduce) { .pop, .pop .prog { animation: none; } .pop .prog { width: 72%; } }
 </style>
 
-<div class="sheet">
-<nav class="nav" aria-label="섹션">
+<div class="texture" aria-hidden="true"></div>
+<nav class="nav" aria-label="메뉴">
   <div class="wrap">
-    <a class="lnk" href="#how">일하는 방식</a>
-    <a class="lnk" href="#helpnest">HelpNest</a>
-    <a class="lnk" href="#pharmaprice">약값알림</a>
-    <a class="lnk" href="#skills">기술 · 학력</a>
-    <a class="lnk keep" href="#contact">연락처</a>
+    <a class="logo" href="#top">Park Minjae</a>
+    <ul>
+      <li><a class="pill" href="#how">일하는 방식</a></li>
+      <li><a class="pill" href="#projects">프로젝트</a></li>
+      <li><a class="pill" href="#skills">기술 · 학력</a></li>
+      <li><a class="pill" href="#contact">연락처</a></li>
+      <li><a class="pill dark" href="https://github.com/totot03" target="_blank" rel="noopener">GitHub ↗</a></li>
+    </ul>
   </div>
 </nav>
 
-
 <header class="hero" id="top">
   <div class="wrap">
-    <div>
-      <a class="me" href="#top"><i></i>박민재</a>
-      <p class="kicker">Junior Developer · Portfolio</p>
-      <h1>안녕하세요,<br>신입 개발자<br><span>박민재</span>입니다</h1>
-      <dl class="contact">
-        <dt>Email</dt><dd>mjppnara@naver.com</dd>
-        <dt>GitHub</dt><dd>github.com/totot03</dd>
-      </dl>
-      <div class="cta">
-        <a class="btn line" href="https://github.com/totot03" target="_blank" rel="noopener">GitHub 프로필 ↗</a>
+    <div class="hero-title"><h1 class="disp split" aria-label="Portfolio">Portfolio</h1><sup>2026</sup></div>
+    <p class="hero-sub"><b>신입 개발자 박민재</b><span>백엔드 · 프론트엔드</span><span>Java · Spring Boot · Next.js · PostgreSQL</span><span>경기도 성남시</span></p>
+    <div class="stage on-black">
+      <div class="hexfx" aria-hidden="true"><pre class="dump"></pre></div>
+      <div class="stage-in">
+        <div>
+          <h2>안녕하세요,<br>신입 개발자 <em>박민재</em>입니다.</h2>
+          <p class="motto">“만들기 전에 먼저 지켜야 할 것을 생각하고,<br>배포까지 책임지는 개발자가 되겠습니다.”</p>
+          <div class="tags"><span class="tag">HelpNest 운영 중</span><span class="tag">918시간 교육과정</span></div>
+        </div>
+        <a class="arrow" href="#projects" aria-label="프로젝트 보기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></a>
       </div>
     </div>
-    <svg class="hero-art" viewBox="0 0 600 480" aria-hidden="true" focusable="false">
-      <circle class="ha-ring" cx="34" cy="430" r="28"/>
-      <g class="ha-tag"><polyline points="496,14 482,28 496,42"/><line class="ha-acc-s" x1="512" y1="44" x2="526" y2="12"/><polyline points="542,14 556,28 542,42"/></g>
-      <rect class="ha-frame" x="40" y="30" width="420" height="300" rx="12"/>
-      <line class="ha-line" x1="40" y1="70" x2="460" y2="70"/>
-      <circle class="ha-dot" cx="66" cy="50" r="5"/><circle class="ha-dot" cx="86" cy="50" r="5"/><circle class="ha-dot" cx="106" cy="50" r="5"/>
-      <rect class="ha-dim" x="140" y="46" width="80" height="8" rx="4"/>
-      <g class="ha-code">
-        <g style="--r:0"><rect class="ha-dim" x="64" y="92" width="14" height="8" rx="4"/><rect class="bar ha-acc" x="96" y="92" width="56" height="8" rx="4"/><rect class="bar ha-mid" x="160" y="92" width="120" height="8" rx="4"/></g>
-        <g style="--r:1"><rect class="ha-dim" x="64" y="116" width="14" height="8" rx="4"/><rect class="bar ha-mid" x="120" y="116" width="90" height="8" rx="4"/><rect class="bar ha-dim" x="218" y="116" width="140" height="8" rx="4"/></g>
-        <g style="--r:2"><rect class="ha-dim" x="64" y="140" width="14" height="8" rx="4"/><rect class="bar ha-hi" x="120" y="140" width="70" height="8" rx="4"/><rect class="bar ha-acc" x="198" y="140" width="48" height="8" rx="4"/><rect class="bar ha-mid" x="254" y="140" width="100" height="8" rx="4"/></g>
-        <g style="--r:3"><rect class="ha-dim" x="64" y="164" width="14" height="8" rx="4"/><rect class="bar ha-mid" x="144" y="164" width="150" height="8" rx="4"/></g>
-        <g style="--r:4"><rect class="ha-dim" x="64" y="188" width="14" height="8" rx="4"/><rect class="bar ha-dim" x="144" y="188" width="60" height="8" rx="4"/><rect class="bar ha-hi" x="212" y="188" width="110" height="8" rx="4"/></g>
-        <g style="--r:5"><rect class="ha-dim" x="64" y="212" width="14" height="8" rx="4"/><rect class="bar ha-mid" x="120" y="212" width="40" height="8" rx="4"/></g>
-        <g style="--r:6"><rect class="ha-dim" x="64" y="236" width="14" height="8" rx="4"/></g>
-        <g style="--r:7"><rect class="ha-dim" x="64" y="260" width="14" height="8" rx="4"/><rect class="bar ha-acc" x="120" y="260" width="64" height="8" rx="4"/><rect class="bar ha-mid" x="192" y="260" width="130" height="8" rx="4"/></g>
-        <g style="--r:8"><rect class="ha-dim" x="64" y="284" width="14" height="8" rx="4"/><rect class="bar ha-mid" x="96" y="284" width="30" height="8" rx="4"/></g>
-        <rect class="ha-cursor" x="134" y="280" width="3" height="16"/>
-      </g>
-      <line class="ha-line" x1="530" y1="60" x2="530" y2="446"/>
-      <path class="ha-branch" d="M530 180 C530 212 570 208 570 240 L570 330 C570 362 530 358 530 390"/>
-      <circle class="ha-node" cx="530" cy="100" r="7"/><circle class="ha-node" cx="530" cy="180" r="7"/>
-      <circle class="ha-node acc" cx="570" cy="260" r="7"/><circle class="ha-node acc" cx="570" cy="310" r="7"/>
-      <circle class="ha-node" cx="530" cy="440" r="7"/>
-      <circle class="ha-head-ring" cx="530" cy="390" r="7"/><circle class="ha-head" cx="530" cy="390" r="7"/>
-      <rect class="ha-frame" x="110" y="350" width="300" height="104" rx="10"/>
-      <polyline class="ha-acc-s" points="130,378 136,384 130,390"/><rect class="ha-mid" x="146" y="380" width="150" height="8" rx="4"/>
-      <rect class="ha-dim" x="130" y="406" width="90" height="8" rx="4"/><rect class="ha-dim" x="228" y="406" width="60" height="8" rx="4"/>
-      <polyline class="ha-acc-s" points="130,434 135,439 144,428"/><rect class="ha-hi" x="154" y="430" width="110" height="8" rx="4"/>
-    </svg>
+  </div>
+  <div class="ticker" aria-hidden="true">
+    <div class="track">
+      <ul><li>Java</li><li>Spring Boot</li><li>JPA</li><li>WebSocket</li><li>Next.js</li><li>TypeScript</li><li>PostgreSQL</li><li>AWS</li><li>Docker</li><li>Claude Code</li></ul>
+      <ul><li>Java</li><li>Spring Boot</li><li>JPA</li><li>WebSocket</li><li>Next.js</li><li>TypeScript</li><li>PostgreSQL</li><li>AWS</li><li>Docker</li><li>Claude Code</li></ul>
+    </div>
   </div>
 </header>
 
-<section id="how" aria-label="일하는 방식">
+<section id="how">
   <div class="wrap">
-      <p class="eyebrow">How I Work</p>
-      <h2>먼저 정하고, 맡은 건 끝까지</h2>
-      <div class="ways">
-        <div class="way">
-          <h4>문서로 먼저 설계</h4>
-          <p>무엇을 만들지와 어디까지 만들지를 글로 정해 두고 시작합니다. 중간에 방향이 흔들리면 그 문서로 돌아갑니다.</p>
-          <p class="src">약값알림 PRD · HelpNest 이벤트/포트 계약</p>
-        </div>
-        <div class="way">
-          <h4>테스트까지 책임</h4>
-          <p>맡은 도메인의 상태 전이, 배정, SLA 판정은 테스트로 확인하고, 기능을 잘게 나눠 PR로 올렸습니다.</p>
-          <p class="src">테스트 클래스 35개 · 백엔드 커밋 173개</p>
-        </div>
-        <div class="way">
-          <h4>Claude Code를 규칙 안에서</h4>
-          <p>세 명이 각자 Claude Code를 쓰면서도 같은 공용 설정과 파일 소유권 규칙을 지켜, AI가 남의 코드를 건드리지 않게 했습니다.</p>
-          <p class="src">HelpNest 팀 공용 설정 · 변경 요청 Issue</p>
-        </div>
+    <div class="head"><h2 class="disp">How I Work</h2><p>먼저 정하고, 맡은 건 끝까지 갑니다.</p></div>
+    <div class="ways">
+      <div class="way">
+        <h3>문서로 먼저 설계</h3>
+        <p>무엇을 만들지와 어디까지 만들지를 글로 정해 두고 시작합니다. 중간에 방향이 흔들리면 그 문서로 돌아갑니다.</p>
+        <p class="src">약값알림 PRD · HelpNest 이벤트/포트 계약</p>
       </div>
-  </div>
-</section>
-
-<section id="projects">
-  <div class="wrap">
-    <div class="plinks">
-      <p class="lbl">Projects</p>
-      <div class="plink">
-        <div class="top"><h3>HelpNest</h3><span class="tag live">운영 중</span><span class="tag">3인 팀</span></div>
-        <p>AI 고객상담 헬프데스크 · 티켓, SLA, 실시간 알림 · 채팅 담당</p>
-        <div class="go">
-          <a class="main" href="https://helpnest.kro.kr" target="_blank" rel="noopener">사이트 열기 ↗</a>
-          <a href="https://github.com/BaekSeongJun/helpnest-back" target="_blank" rel="noopener">Backend ↗</a>
-          <a href="https://github.com/BaekSeongJun/helpnest-front" target="_blank" rel="noopener">Frontend ↗</a>
-          <a href="https://github.com/BaekSeongJun/helpnest-docs" target="_blank" rel="noopener">Docs ↗</a>
-          <a class="more" href="#helpnest">자세히 ↓</a>
-        </div>
+      <div class="way">
+        <h3>테스트까지 책임</h3>
+        <p>맡은 도메인의 상태 전이, 배정, SLA 판정은 테스트로 확인하고, 기능을 잘게 나눠 PR로 올렸습니다.</p>
+        <p class="src">테스트 클래스 35개 · 백엔드 커밋 173개</p>
       </div>
-      <div class="plink">
-        <div class="top"><h3>약값알림</h3><span class="tag">개인 구현</span></div>
-        <p>약국별 일반의약품 최저가 추천 · 위치 기반 서비스</p>
-        <div class="go">
-          <a class="main" href="https://github.com/totot03/miniproject1" target="_blank" rel="noopener">GitHub 저장소 ↗</a>
-          <a class="more" href="#pharmaprice">자세히 ↓</a>
-        </div>
+      <div class="way">
+        <h3>Claude Code를 규칙 안에서</h3>
+        <p>세 명이 각자 Claude Code를 쓰면서도 같은 공용 설정과 파일 소유권 규칙을 지켜, AI가 남의 코드를 건드리지 않게 했습니다.</p>
+        <p class="src">HelpNest 팀 공용 설정 · 변경 요청 Issue</p>
       </div>
     </div>
   </div>
 </section>
 
-<div class="facts">
+<section id="projects" class="band">
   <div class="wrap">
-    <div class="fact"><div class="n">173<small>커밋</small></div><p class="l">HelpNest 백엔드, 팀 내 최다</p></div>
-    <div class="fact"><div class="n">35<small>클래스</small></div><p class="l">담당 도메인 테스트</p></div>
-    <div class="fact"><div class="n">7<small>테이블</small></div><p class="l">티켓 · 알림 · 채팅 소유</p></div>
-    <div class="fact"><div class="n">918<small>시간</small></div><p class="l">Java · Spring · AI 교육과정</p></div>
+    <div class="head"><h2 class="disp">Projects<sup>2</sup></h2><p>팀 프로젝트 하나, 개인 프로젝트 하나. 둘 다 끝까지 동작하게 만들었습니다.</p></div>
+
+    <article class="proj">
+      <div class="txt">
+        <h3 class="disp">HelpNest</h3>
+        <p class="when">2026.09 — 10</p>
+        <div><span class="tag hl">운영 중</span></div>
+        <p class="desc">AI 고객상담 헬프데스크. 문의가 티켓이 되어 해결될 때까지의 흐름과 실시간 알림 · 채팅을 맡았습니다.</p>
+        <dl class="kv"><div><dt>역할</dt><dd>티켓 흐름 · 실시간</dd></div><div><dt>팀</dt><dd>3인</dd></div><div><dt>스택</dt><dd>Spring Boot · Next.js</dd></div></dl>
+        <div class="links"><a class="pill dark" href="https://helpnest.kro.kr" target="_blank" rel="noopener">사이트 열기 ↗</a><a class="pill" href="#helpnest">자세히 보기</a></div>
+      </div>
+      <div class="shot">
+        <p class="flowline" aria-label="티켓 상태: 접수, 배정, 처리 중, 해결, 종료"><span><i>01</i>Received</span><span><i>02</i>Assigned</span><span><i>03</i>In progress</span><span><i>04</i>Resolved</span><span><i>05</i>Closed</span></p>
+        <p class="cap">제가 만든 티켓 상태 전이</p>
+        <a class="arrow" href="https://helpnest.kro.kr" target="_blank" rel="noopener" aria-label="HelpNest 사이트 열기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></a>
+      </div>
+    </article>
+
+    <article class="proj">
+      <div class="txt">
+        <h3 class="disp ko">약값알림</h3>
+        <p class="when">2026.09</p>
+        <div><span class="tag">개인 구현</span></div>
+        <p class="desc">약국별 일반의약품 최저가 추천. 가격, 거리, 가격 정보의 신선도를 가중한 점수로 반경 안의 약국을 추천합니다.</p>
+        <dl class="kv"><div><dt>역할</dt><dd>기획 · 설계 · 구현</dd></div><div><dt>팀</dt><dd>개인</dd></div><div><dt>스택</dt><dd>Spring Boot · Next.js · Python</dd></div></dl>
+        <div class="links"><a class="pill dark" href="https://github.com/totot03/miniproject1" target="_blank" rel="noopener">GitHub 저장소 ↗</a><a class="pill" href="#pharmaprice">자세히 보기</a></div>
+      </div>
+      <div class="shot">
+        <p class="formula">가격<span>,</span> 거리<span>,</span><br>신선도</p>
+        <p class="cap">세 값을 가중한 점수로 약국 순위를 매김</p>
+        <a class="arrow" href="https://github.com/totot03/miniproject1" target="_blank" rel="noopener" aria-label="약값알림 저장소 열기"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></a>
+      </div>
+    </article>
+
+    <div class="facts">
+      <div class="fact"><p class="n">173</p><p class="l">HelpNest 백엔드 커밋, 팀 내 최다</p></div>
+      <div class="fact"><p class="n">35</p><p class="l">담당 도메인 테스트 클래스</p></div>
+      <div class="fact"><p class="n">7</p><p class="l">직접 소유한 테이블</p></div>
+      <div class="fact"><p class="n">918</p><p class="l">Java · Spring · AI 교육과정 시간</p></div>
+    </div>
   </div>
-</div>
+</section>
 
 <main>
 <section id="helpnest">
   <div class="wrap">
-    <p class="eyebrow">Main Project · Team of 3</p>
-    <h2>HelpNest: AI 고객상담 헬프데스크</h2>
-    <p class="intro">모든 문의를 티켓으로 모으고, AI가 분류와 답변 초안을 만들어 상담원의 처리 시간을 줄이는 고객센터 시스템입니다. 팀원 세 명이 도메인을 나눠 맡았고, 저는 문의가 티켓이 되어 해결될 때까지 흘러가는 길을 만들었습니다.</p>
-    <div class="meta-row">
-      <span><b>기간</b> 2026.09 – 10</span>
-      <span><b>역할</b> 티켓 흐름 · 실시간</span>
-      <span><b>스택</b> Spring Boot 4 · Java 21 · Next.js 16 · PostgreSQL 16 · AWS</span>
-      <a href="https://helpnest.kro.kr" target="_blank" rel="noopener">helpnest.kro.kr ↗</a>
+    <div class="head"><h2 class="disp">HelpNest</h2><p>AI 고객상담 헬프데스크 · 메인 프로젝트 · 3인 팀</p></div>
+    <p class="lead">모든 문의를 티켓으로 모으고, AI가 분류와 답변 초안을 만들어 상담원의 처리 시간을 줄이는 고객센터 시스템입니다. 팀원 세 명이 도메인을 나눠 맡았고, 저는 문의가 티켓이 되어 해결될 때까지 흘러가는 길을 만들었습니다.</p>
+    <div class="meta-pills">
+      <span class="tag">2026.09 — 10</span><span class="tag">Spring Boot 4 · Java 21</span><span class="tag">Next.js 16</span><span class="tag">PostgreSQL 16</span><span class="tag">AWS</span>
+      <a class="pill" href="https://github.com/BaekSeongJun/helpnest-back" target="_blank" rel="noopener">Backend ↗</a>
+      <a class="pill" href="https://github.com/BaekSeongJun/helpnest-front" target="_blank" rel="noopener">Frontend ↗</a>
+      <a class="pill" href="https://github.com/BaekSeongJun/helpnest-docs" target="_blank" rel="noopener">Docs ↗</a>
     </div>
 
-    <h3 class="sub">맡은 범위 <span class="mono">BACKEND + FRONTEND</span></h3>
-    <div class="own">
-      <div class="box">
-        <h4>기능</h4>
-        <ul class="dots">
+    <div class="row">
+      <h3>맡은 범위<small>백엔드 + 프론트엔드</small></h3>
+      <div class="two">
+        <ul class="list">
           <li>티켓 CRUD와 상태 전이 규칙, 모든 변경을 이력으로 기록</li>
           <li>최소 부하 기반 자동 배정, 팀장의 수동 배정 · 재배정</li>
           <li>SLA 스케줄러: 첫 응답 기한 80% 경과 · 초과 시 실시간 알림</li>
@@ -402,197 +405,274 @@
           <li>대기열 기반 1:1 채팅, 상담원이 없으면 문의 티켓으로 전환</li>
           <li>Next.js 상담 콘솔: 티켓함, 티켓 상세, 채팅, SLA 정책 관리 화면</li>
         </ul>
-      </div>
-      <div class="box">
-        <h4>소유한 테이블</h4>
-        <div class="tables">
-          <code>ticket</code><code>ticket_history</code><code>ticket_reply</code><code>sla_policy</code><code>notification</code><code>chat_room</code><code>chat_message</code>
+        <div>
+          <h4>소유한 테이블</h4>
+          <div class="tables"><code>ticket</code><code>ticket_history</code><code>ticket_reply</code><code>sla_policy</code><code>notification</code><code>chat_room</code><code>chat_message</code></div>
+          <p class="note">티켓번호는 DB 시퀀스로 발급해 동시에 접수돼도 겹치지 않습니다. 스키마는 Flyway 마이그레이션으로만 바꾸고, 파일 이름에 작성자 이니셜을 넣었습니다.</p>
         </div>
-        <p class="note">티켓번호는 DB 시퀀스로 발급해 동시에 접수돼도 겹치지 않습니다. 스키마는 Flyway 마이그레이션으로만 바꾸고, 파일 이름에 작성자 이니셜을 넣었습니다.</p>
       </div>
     </div>
 
-    <h3 class="sub">티켓 상태 전이 <span class="mono">TICKET LIFECYCLE</span></h3>
-    <div class="flow">
-      <div class="state"><p class="en">RECEIVED</p><p class="ko">접수</p><p class="by">고객이 문의</p></div>
-      <div class="state"><p class="en">ASSIGNED</p><p class="ko">배정</p><p class="by">자동 · 팀장</p></div>
-      <div class="state"><p class="en">IN_PROGRESS</p><p class="ko">처리 중</p><p class="by">첫 답변</p></div>
-      <div class="state"><p class="en">RESOLVED</p><p class="ko">해결</p><p class="by">설문 발송</p></div>
-      <div class="state last"><p class="en">CLOSED</p><p class="ko">종료</p><p class="by">설문 제출 · 72시간</p></div>
-    </div>
-    <div class="rules">
-      <div class="box">
-        <h4>규칙은 서비스 계층 한 곳에서</h4>
-        <ul class="dots">
-          <li>허용된 전이와 수행자 권한을 함께 검사하고, 어기면 <code>TICKET_INVALID_TRANSITION</code></li>
-          <li>해결 뒤 고객이 다시 답글을 달면 처리 중으로 돌아가는 재문의 처리</li>
-          <li>배정은 처리 중 건수가 가장 적은 상담원, 같으면 가장 오래 쉰 상담원</li>
-          <li>상태 · 배정 · 우선순위 변경은 전부 <code>ticket_history</code>에</li>
-        </ul>
-      </div>
-      <div class="box">
-        <h4>첫 응답 기한 (SLA)</h4>
-        <table class="sla">
-          <thead><tr><th>우선순위</th><th>기한</th><th>경고 시점 (80%)</th></tr></thead>
-          <tbody>
-            <tr><td>긴급</td><td>1시간</td><td><span class="pill">48분</span></td></tr>
-            <tr><td>높음</td><td>4시간</td><td><span class="pill">3시간 12분</span></td></tr>
-            <tr><td>보통</td><td>24시간</td><td><span class="pill">19시간 12분</span></td></tr>
-            <tr><td>낮음</td><td>48시간</td><td><span class="pill">38시간 24분</span></td></tr>
-          </tbody>
-        </table>
-        <p class="note">판정 기준은 첫 답변 시각입니다. 답변을 여러 번 달아도 최초 시각은 덮어쓰지 않습니다.</p>
+    <div class="row">
+      <h3>티켓 상태 전이<small>해결 뒤 재답글이면 처리 중으로 복귀</small></h3>
+      <div>
+        <div class="flow">
+          <div class="state"><p class="en">Received</p><p class="ko">접수</p><p class="by">고객이 문의</p></div>
+          <div class="state"><p class="en">Assigned</p><p class="ko">배정</p><p class="by">자동 · 팀장</p></div>
+          <div class="state"><p class="en">In progress</p><p class="ko">처리 중</p><p class="by">첫 답변</p></div>
+          <div class="state"><p class="en">Resolved</p><p class="ko">해결</p><p class="by">설문 발송</p></div>
+          <div class="state last"><p class="en">Closed</p><p class="ko">종료</p><p class="by">설문 제출 · 72시간</p></div>
+        </div>
+        <div class="two" style="margin-top:32px">
+          <div>
+            <h4>규칙은 서비스 계층 한 곳에서</h4>
+            <ul class="list">
+              <li>허용된 전이와 수행자 권한을 함께 검사하고, 어기면 <code>TICKET_INVALID_TRANSITION</code></li>
+              <li>해결 뒤 고객이 다시 답글을 달면 처리 중으로 돌아가는 재문의 처리</li>
+              <li>배정은 처리 중 건수가 가장 적은 상담원, 같으면 가장 오래 쉰 상담원</li>
+              <li>상태 · 배정 · 우선순위 변경은 전부 <code>ticket_history</code>에</li>
+            </ul>
+          </div>
+          <div>
+            <h4>첫 응답 기한 (SLA)</h4>
+            <table class="sla">
+              <thead><tr><th>우선순위</th><th>기한</th><th>경고 시점 (80%)</th></tr></thead>
+              <tbody>
+                <tr><td>긴급</td><td>1시간</td><td>48분</td></tr>
+                <tr><td>높음</td><td>4시간</td><td>3시간 12분</td></tr>
+                <tr><td>보통</td><td>24시간</td><td>19시간 12분</td></tr>
+                <tr><td>낮음</td><td>48시간</td><td>38시간 24분</td></tr>
+              </tbody>
+            </table>
+            <p class="note">판정 기준은 첫 답변 시각입니다. 답변을 여러 번 달아도 최초 시각은 덮어쓰지 않습니다.</p>
+          </div>
+        </div>
       </div>
     </div>
 
-    <h3 class="sub">직접 해결한 문제 <span class="mono">CHALLENGES</span></h3>
-    <div class="probs">
-      <article class="prob">
-        <div class="txt">
-          <p class="q">동시에 들어온 문의가 같은 상담원에게 중복 배정됐다</p>
-          <p class="lbl">해결</p>
-          <p class="a">배정 트랜잭션에서 티켓 행을 <code>SELECT … FOR UPDATE</code>로 잠그고, 최소 부하 → 마지막 배정 시각 → id 순으로 결과를 고정했습니다.</p>
-        </div>
-        <figure class="code">
-          <figcaption>TicketRepository.java</figcaption>
+    <div class="row">
+      <h3>직접 해결한 문제</h3>
+      <div>
+        <article class="prob">
+          <div class="t">
+            <p class="k">문제</p>
+            <p class="q">동시에 들어온 문의가 같은 상담원에게 중복 배정됐다</p>
+            <p class="k fix">해결</p>
+            <p class="a">배정 트랜잭션에서 티켓 행을 <code>SELECT … FOR UPDATE</code>로 잠그고, 최소 부하 → 마지막 배정 시각 → id 순으로 결과를 고정했습니다.</p>
+          </div>
+          <figure class="code">
+            <figcaption>TicketRepository.java</figcaption>
 <pre><span class="c-k">@Lock</span>(LockModeType.PESSIMISTIC_WRITE)
 <span class="c-k">@Query</span>(<span class="c-s">"select t from Ticket t where t.id = :id"</span>)
 Optional&lt;Ticket&gt; findByIdForUpdate(<span class="c-k">@Param</span>(<span class="c-s">"id"</span>) Long id);</pre>
-        </figure>
-      </article>
-      <article class="prob">
-        <div class="txt">
-          <p class="q">채팅 연결 경합으로 한 고객에게 대기방이 두 개 생겼다</p>
-          <p class="lbl">해결</p>
-          <p class="a">진행 중인 방은 고객당 하나만 있도록 부분 유니크 인덱스로 DB가 강제하게 하고, 방 행을 잠근 뒤 상담원을 연결했습니다.</p>
-        </div>
-        <figure class="code">
-          <figcaption>V…__PMJ_chat_room_active_unique.sql</figcaption>
+          </figure>
+        </article>
+        <article class="prob">
+          <div class="t">
+            <p class="k">문제</p>
+            <p class="q">채팅 연결 경합으로 한 고객에게 대기방이 두 개 생겼다</p>
+            <p class="k fix">해결</p>
+            <p class="a">진행 중인 방은 고객당 하나만 있도록 부분 유니크 인덱스로 DB가 강제하게 하고, 방 행을 잠근 뒤 상담원을 연결했습니다.</p>
+          </div>
+          <figure class="code">
+            <figcaption>V…__PMJ_chat_room_active_unique.sql</figcaption>
 <pre><span class="c-k">CREATE UNIQUE INDEX</span> uq_chat_room_active_customer
   <span class="c-k">ON</span> chat_room(customer_id)
   <span class="c-k">WHERE</span> status <span class="c-k">IN</span> (<span class="c-s">'WAITING'</span>, <span class="c-s">'OPEN'</span>);</pre>
-        </figure>
-      </article>
+          </figure>
+        </article>
+      </div>
     </div>
 
-    <h3 class="sub">돌아보며 <span class="mono">RETROSPECTIVE</span></h3>
-    <div class="own">
-      <div class="box">
-        <h4>잘된 점</h4>
-        <ul class="dots">
-          <li>문서와 이벤트 · 인터페이스 계약을 먼저 확정해, 구현 중에 설계를 다시 논의할 일이 거의 없었습니다.</li>
-          <li>파일마다 주인을 정하고 남의 코드는 Issue로만 요청해, 서로의 코드를 덮어쓰는 충돌이 없었습니다.</li>
-        </ul>
-      </div>
-      <div class="box">
-        <h4>다음에 바꿀 점</h4>
-        <ul class="dots">
-          <li>테스트가 백엔드에 몰려 프론트 화면은 수동 확인에 기댔습니다.</li>
-          <li>CI가 끝나기 전에도 main 머지가 가능했습니다. 브랜치 보호를 더 엄격히 하겠습니다.</li>
-        </ul>
+    <div class="row">
+      <h3>돌아보며</h3>
+      <div class="two pair">
+        <div>
+          <h4>잘된 점</h4>
+          <ul class="list">
+            <li>문서와 이벤트 · 인터페이스 계약을 먼저 확정해, 구현 중에 설계를 다시 논의할 일이 거의 없었습니다.</li>
+            <li>파일마다 주인을 정하고 남의 코드는 Issue로만 요청해, 서로의 코드를 덮어쓰는 충돌이 없었습니다.</li>
+          </ul>
+        </div>
+        <div>
+          <h4>다음에 바꿀 점</h4>
+          <ul class="list">
+            <li>테스트가 백엔드에 몰려 프론트 화면은 수동 확인에 기댔습니다.</li>
+            <li>CI가 끝나기 전에도 main 머지가 가능했습니다. 브랜치 보호를 더 엄격히 하겠습니다.</li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>
 </section>
 
-<section id="pharmaprice">
+<section id="pharmaprice" class="band">
   <div class="wrap">
-    <p class="eyebrow">Mini Project · Solo</p>
-    <h2>약값알림: 약국별 일반의약품 최저가 추천</h2>
-    <p class="intro">가격, 거리, 가격 정보의 신선도를 가중한 점수로 반경 안에서 가장 나은 약국을 추천하는 위치 기반 서비스입니다. 혼자 기획부터 구현까지 진행했습니다.</p>
-    <div class="meta-row">
-      <span><b>기간</b> 2026.09</span>
-      <span><b>역할</b> 개인 구현</span>
-      <span><b>스택</b> Java 21 · Spring Boot · Next.js · TypeScript · PostgreSQL · Python</span>
-      <a href="https://github.com/totot03/miniproject1" target="_blank" rel="noopener">github.com/totot03/miniproject1 ↗</a>
+    <div class="head"><h2 class="disp">Pharma Price</h2><p>약값알림 · 미니 프로젝트 · 개인</p></div>
+    <p class="lead">가격, 거리, 가격 정보의 신선도를 가중한 점수로 반경 안에서 가장 나은 약국을 추천하는 위치 기반 서비스입니다. 혼자 기획부터 구현까지 진행했습니다.</p>
+    <div class="meta-pills">
+      <span class="tag">2026.09</span><span class="tag">Java 21 · Spring Boot</span><span class="tag">Next.js · TypeScript</span><span class="tag">PostgreSQL</span><span class="tag">Python</span>
+      <a class="pill" href="https://github.com/totot03/miniproject1" target="_blank" rel="noopener">GitHub ↗</a>
     </div>
-    <div class="own" style="margin-top:28px">
-      <div class="box">
-        <h4>만든 것</h4>
-        <ul class="dots">
-          <li>가격 · 거리 · 신선도 가중 점수로 약국 순위를 매기는 추천 로직</li>
-          <li>PostgreSQL <code>pg_trgm</code>을 쓴 약 이름 부분 검색</li>
-          <li>카카오맵 API로 지도와 위치 표시</li>
-          <li>Python으로 공공데이터를 가공해 시드 데이터 생성</li>
-        </ul>
-      </div>
-      <div class="box">
-        <h4>코드보다 문서를 먼저</h4>
-        <ul class="dots">
-          <li>PRD, DB 설계, API 명세, 로드맵을 먼저 쓰고 태스크 단위로 구현</li>
-          <li>영수증 인식, 결제처럼 하지 않을 일을 먼저 정해 끝까지 동작하는 범위에 집중</li>
-          <li>DB 시간대가 UTC면 한국 시간 오전 9시 전에 날짜가 하루 밀려 중복 제보 검사가 어긋나는 문제를 막으려고 Asia/Seoul로 고정하고, 이유를 README에 남김</li>
-        </ul>
-      </div>
+    <div class="row">
+      <h3>만든 것</h3>
+      <ul class="list">
+        <li>가격 · 거리 · 신선도 가중 점수로 약국 순위를 매기는 추천 로직</li>
+        <li>PostgreSQL <code>pg_trgm</code>을 쓴 약 이름 부분 검색</li>
+        <li>카카오맵 API로 지도와 위치 표시</li>
+        <li>Python으로 공공데이터를 가공해 시드 데이터 생성</li>
+      </ul>
+    </div>
+    <div class="row">
+      <h3>코드보다 문서를 먼저</h3>
+      <ul class="list">
+        <li>PRD, DB 설계, API 명세, 로드맵을 먼저 쓰고 태스크 단위로 구현</li>
+        <li>영수증 인식, 결제처럼 하지 않을 일을 먼저 정해 끝까지 동작하는 범위에 집중</li>
+        <li>DB 시간대가 UTC면 한국 시간 오전 9시 전에 날짜가 하루 밀려 중복 제보 검사가 어긋나는 문제를 막으려고 Asia/Seoul로 고정하고, 이유를 README에 남김</li>
+      </ul>
     </div>
   </div>
 </section>
 
 <section id="skills">
   <div class="wrap">
-    <p class="eyebrow">Skills · Education</p>
-    <h2>프로젝트에서 직접 써 본 기술</h2>
+    <div class="head"><h2 class="disp">Skills</h2><p>모두 신입 수준이며, 위 두 프로젝트에서 실제로 사용했습니다.</p></div>
     <dl class="skills">
-      <div class="skill"><dt>백엔드</dt><dd><span class="chip">Java 21</span><span class="chip">Spring Boot</span><span class="chip">JPA</span><span class="chip">Spring Security · JWT</span><span class="chip">WebSocket · STOMP</span><span class="chip">Flyway</span></dd></div>
-      <div class="skill"><dt>프론트엔드</dt><dd><span class="chip">TypeScript</span><span class="chip">React</span><span class="chip">Next.js</span><span class="chip">TanStack Query</span><span class="chip">Tailwind CSS</span></dd></div>
-      <div class="skill"><dt>AI 활용</dt><dd><span class="chip">Spring AI · LLM 연동</span><span class="chip">Claude Code</span></dd></div>
-      <div class="skill"><dt>DB · 인프라</dt><dd><span class="chip">PostgreSQL</span><span class="chip">Docker Compose</span><span class="chip">AWS (S3 · SES · CloudFront)</span><span class="chip">GitHub Actions</span></dd></div>
-      <div class="skill"><dt>보안 기초</dt><dd><span class="chip">네트워크 보안</span><span class="chip">모의해킹</span><span class="chip">리눅스</span></dd></div>
+      <div class="skill"><dt>백엔드</dt><dd><span class="tag">Java 21</span><span class="tag">Spring Boot</span><span class="tag">JPA</span><span class="tag">Spring Security · JWT</span><span class="tag">WebSocket · STOMP</span><span class="tag">Flyway</span></dd></div>
+      <div class="skill"><dt>프론트엔드</dt><dd><span class="tag">TypeScript</span><span class="tag">React</span><span class="tag">Next.js</span><span class="tag">TanStack Query</span><span class="tag">Tailwind CSS</span></dd></div>
+      <div class="skill"><dt>AI 활용</dt><dd><span class="tag">Spring AI · LLM 연동</span><span class="tag">Claude Code</span></dd></div>
+      <div class="skill"><dt>DB · 인프라</dt><dd><span class="tag">PostgreSQL</span><span class="tag">Docker Compose</span><span class="tag">AWS (S3 · SES · CloudFront)</span><span class="tag">GitHub Actions</span></dd></div>
+      <div class="skill"><dt>보안 기초</dt><dd><span class="tag">네트워크 보안</span><span class="tag">모의해킹</span><span class="tag">리눅스</span></dd></div>
     </dl>
-    <p class="skills-note">모두 신입 수준이며, 위 두 프로젝트에서 실제로 사용했습니다.</p>
-  </div>
-</section>
 
-<section id="education">
-  <div class="wrap">
-    <h3 class="sub">학력 · 교육 <span class="mono">EDUCATION</span></h3>
+    <div class="head" style="margin-top:clamp(80px, 9vw, 128px)"><h2 class="disp">Education</h2><p>학력 · 교육</p></div>
     <div class="edu">
-      <div class="edu-item">
-        <p class="when">2026.05 – 2026.11</p>
-        <div>
-          <h4>자바와생성형AI를활용한차세대CRM플랫폼개발 6기<span class="badge">수료 예정</span></h4>
-          <p>하이미디어학원 · 918시간 · Java, Spring Boot, AI Automation, AWS, LowCode, 미니 · 메인 프로젝트</p>
-        </div>
+      <p class="when">2026.05 — 11</p>
+      <div>
+        <h4>자바와생성형AI를활용한차세대CRM플랫폼개발 6기 <span class="tag hl">수료 예정</span></h4>
+        <p>하이미디어학원 · 918시간 · Java, Spring Boot, AI Automation, AWS, LowCode, 미니 · 메인 프로젝트</p>
       </div>
-      <div class="edu-item">
-        <p class="when">2022.03 – 2026.02</p>
-        <div>
-          <h4>신구대학교 IT보안과<span class="badge">졸업</span></h4>
-          <p>전문학사 · 네트워크 보안, 모의해킹, 리눅스</p>
-        </div>
+    </div>
+    <div class="edu">
+      <p class="when">2022.03 — 2026.02</p>
+      <div>
+        <h4>신구대학교 IT보안과 <span class="tag">졸업</span></h4>
+        <p>전문학사 · 네트워크 보안, 모의해킹, 리눅스</p>
       </div>
     </div>
   </div>
 </section>
 </main>
 
-<footer id="contact">
+<footer id="contact" class="band">
   <div class="wrap">
-    <p class="kicker">Contact</p>
-    <h2 style="margin-top:14px">함께 일할 기회를 기다립니다</h2>
-    <dl class="contact">
-      <dt>Email</dt><dd>mjppnara@naver.com</dd>
-      <dt>GitHub</dt><dd>github.com/totot03</dd>
-      <dt>Live</dt><dd>helpnest.kro.kr</dd>
-    </dl>
-    <p class="fine">박민재 · 경기도 성남시 · 신입 개발자</p>
+    <div class="talk">
+      <h2 class="disp split" aria-label="Let’s talk">Let’s talk</h2>
+      <div class="talk-row">
+        <div class="contact">
+          <p class="mail"><a href="mailto:mjppnara@naver.com" id="mail">mjppnara@naver.com</a><button class="copy" type="button" id="copy-email">주소 복사</button></p>
+          <a href="https://github.com/totot03" target="_blank" rel="noopener">github.com/totot03</a>
+          <a href="https://helpnest.kro.kr" target="_blank" rel="noopener">helpnest.kro.kr</a>
+          <p>경기도 성남시</p>
+        </div>
+        <p class="say">함께 일할 기회를 기다립니다.</p>
+      </div>
+    </div>
+    <div class="bottom">
+      <a class="logo" href="#top">Park Minjae</a>
+    </div>
+    <p class="fine">© 2026 박민재 · 신입 개발자</p>
   </div>
 </footer>
-</div>
 
 <script>
-  // 스크롤 등장 모션: 화면에 들어온 요소만 차례로 떠오르게 함 (모션 줄이기 설정이면 건너뜀)
   (() => {
-    if (!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    const targets = document.querySelectorAll('#how h2, .way, .plinks > .lbl, .plink, .fact, main h2, .intro, .meta-row, h3.sub, .box, .state, .prob, .skill, .edu-item, footer h2, footer .contact');
-    const io = new IntersectionObserver((entries) => {
-      for (const e of entries) if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
-    }, { rootMargin: '0px 0px -40px 0px' });
-    for (const el of targets) {
-      // 같은 줄에 나란히 있는 형제는 70ms씩 늦게
-      el.style.setProperty('--d', ([...el.parentElement.children].indexOf(el) % 5) * 70 + 'ms');
-      el.classList.add('rv');
-      io.observe(el);
+    // 움직임 줄이기 설정이면 배경 영상 정지
+    // 배너 그림: 헥스 덤프 팝업 창을 계단처럼 띄움 (화면 밖이면 멈춤, 움직임 줄이기면 정지 화면 3장)
+    {
+      const fx = document.querySelector('.hexfx');
+      const hex = (n) => Array.from({ length: n }, () => Math.floor(Math.random() * 256).toString(16).padStart(2, '0').toUpperCase());
+      const ascii = '0123456789abcdefghijklmnopqrstuvwxyz';
+      const line = (off) => {
+        const b = hex(12);
+        const a = Array.from({ length: 12 }, () => ascii[Math.floor(Math.random() * ascii.length)]).join('');
+        return off.toString(16).padStart(4, '0') + '  ' + b.join(' ') + '  ' + a;
+      };
+      // 뒤쪽 흐릿한 메모리 덤프
+      fx.querySelector('.dump').textContent = Array.from({ length: 40 }, (_, i) =>
+        (0x7d658 + i * 16).toString(16).toUpperCase().padStart(8, '0') + '  ' + hex(8).join(' ')).join('\n');
+
+      const titles = ['INPUT', 'TICKET', 'SLA CHECK', 'WS FRAME', 'QUEUE', 'ASSIGN'];
+      let n = 0;
+      const spawn = (still) => {
+        const w = fx.clientWidth, h = fx.clientHeight;
+        const pop = document.createElement('div');
+        pop.className = 'pop';
+        pop.innerHTML = '<div class="bar"></div><span class="x">×</span><h5></h5><pre></pre><p class="seq"></p><div class="prog"></div>';
+        pop.querySelector('h5').textContent = titles[n % titles.length];
+        pop.querySelector('.seq').textContent = 'SEQUENCE: ' + hex(3).join(' ');
+        fx.appendChild(pop);
+        // 오른쪽 영역 안에서 계단식으로 내려가며 배치
+        const pw = pop.offsetWidth, ph = pop.offsetHeight;
+        const minX = w > 760 ? w * .38 : 0;
+        const step = n % 6;
+        pop.style.left = Math.max(0, Math.min(w - pw, minX + step * Math.max(16, (w - minX - pw) / 6))) + 'px';
+        pop.style.top = Math.max(0, Math.min(h - ph, h * .06 + step * Math.max(12, (h * .9 - ph) / 6))) + 'px';
+        const pre = pop.querySelector('pre'), rows = Array.from({ length: 6 }, (_, i) => line(i * 16));
+        if (still) { pre.textContent = rows.join('\n'); }
+        else {
+          let i = 0;
+          const t = setInterval(() => { pre.textContent = rows.slice(0, ++i).join('\n'); if (i >= rows.length) clearInterval(t); }, 70);
+        }
+        n++;
+        const pops = fx.querySelectorAll('.pop:not(.out)');
+        if (pops.length > 6) { pops[0].classList.add('out'); setTimeout(() => pops[0].remove(), 300); }
+      };
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches) { spawn(true); spawn(true); spawn(true); }
+      else {
+        let on = true;
+        if ('IntersectionObserver' in window) new IntersectionObserver(([e]) => { on = e.isIntersecting; }).observe(fx);
+        spawn(false);
+        setInterval(() => { if (on && !document.hidden) spawn(false); }, 1100);
+      }
     }
+
+    const calm = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // 큰 제목을 글자 단위로 나눔 (화면 낭독기는 aria-label로 한 단어로 읽음)
+    document.querySelectorAll('.split').forEach((el) => {
+      el.innerHTML = [...el.textContent].map((c, i) => `<span class="ch" aria-hidden="true" style="--i:${i}">${c === ' ' ? '&nbsp;' : c}</span>`).join('');
+    });
+
+    if (!calm && 'IntersectionObserver' in window) {
+      // LET'S TALK는 화면에 들어올 때 글자가 올라옴
+      const talk = document.querySelector('.talk');
+      new IntersectionObserver(([e], o) => { if (e.isIntersecting) { talk.classList.add('go'); o.disconnect(); } }, { threshold: .4 }).observe(talk);
+
+      // 숫자는 처음부터 최종값으로 보이고, 화면에 들어오면 0부터 다시 셈
+      const io = new IntersectionObserver((entries) => {
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          io.unobserve(e.target);
+          const el = e.target, end = +el.textContent, t0 = performance.now();
+          const tick = (t) => {
+            const k = Math.min(1, (t - t0) / 1200);
+            el.textContent = Math.round(end * (1 - Math.pow(1 - k, 3)));
+            if (k < 1) requestAnimationFrame(tick);
+          };
+          requestAnimationFrame(tick);
+        }
+      }, { threshold: .6 });
+      document.querySelectorAll('.fact .n').forEach((el) => io.observe(el));
+    }
+
+    // 이메일 복사: 클립보드가 막히면 주소 글자를 선택해 둠
+    const btn = document.getElementById('copy-email');
+    btn.addEventListener('click', async () => {
+      const mail = document.getElementById('mail');
+      try { await navigator.clipboard.writeText(mail.textContent); btn.textContent = '복사됨'; }
+      catch { const r = document.createRange(); r.selectNodeContents(mail); const sel = getSelection(); sel.removeAllRanges(); sel.addRange(r); btn.textContent = '선택됨'; }
+      setTimeout(() => { btn.textContent = '주소 복사'; }, 1600);
+    });
   })();
 </script>
